@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BaseLab ระบบเรียนรู้และแปลงเลขฐาน</title>
+<link rel="icon" id="fav" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--c1:#5B21B6;--c2:#7B5CFF;--c3:#A78BFA;--c4:#C4B5FD;--c5:#EDE9FE;--ink:#1F2937;--mut:#6B7280;--ln:#ddd6fe;--g:linear-gradient(135deg,#7B5CFF,#5B21B6);--e:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 'Kanit','Sarabun',system-ui,sans-serif;color:var(--ink);background:radial-gradient(60% 40% at 0 0,var(--c5),transparent 70%),radial-gradient(50% 40% at 100% 25%,#d9ccff,transparent 70%),linear-gradient(160deg,#f3eeff,#e8e0ff);background-attachment:fixed;-webkit-tap-highlight-color:transparent}
+button,input,select{font:inherit;color:inherit;touch-action:manipulation}
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+aside{position:sticky;top:12px;align-self:start;margin:12px 0 12px 12px;height:calc(100vh - 24px);border-radius:26px;padding:20px 12px;color:#fff;background:radial-gradient(120% 50% at 0 0,rgba(255,255,255,.22),transparent 60%),linear-gradient(170deg,#7B5CFF,#5B21B6);box-shadow:0 14px 34px rgba(91,33,182,.28);display:flex;flex-direction:column;gap:22px}
+.brand{display:flex;gap:10px;align-items:center;padding:0 8px}
+.mark{width:38px;height:38px;border-radius:12px;background:#fff;color:var(--c1);display:grid;place-items:center;font-weight:800}
+.brand b{display:block;font-size:20px;line-height:1.1}.brand small{opacity:.8;font-size:12px}
+#nav button{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;color:rgba(255,255,255,.88);padding:11px 14px;border-radius:14px;cursor:pointer;text-align:left;transition:background .15s,transform .12s}
+#nav button:hover{background:rgba(255,255,255,.14)}
+#nav button:active,.tab button:active{transform:scale(.97)}
+#nav button[aria-current=page],.tab button[aria-current=page]{background:#fff;color:var(--c1);font-weight:600}
+.ic{width:20px;height:20px;flex:none}
+main{padding:12px 16px 40px;max-width:1000px;width:100%;margin:0 auto;min-width:0}
+.top{border-radius:24px;padding:18px 24px;color:#fff;background:radial-gradient(60% 140% at 0 0,rgba(255,255,255,.2),transparent 60%),var(--g);box-shadow:0 10px 26px rgba(91,33,182,.24);margin-bottom:18px}
+.top h1{margin:0;font-size:24px}.top p{margin:2px 0 0;opacity:.85;font-size:14px}
+.card{background:#fff;border:1px solid var(--ln);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:0 6px 24px rgba(123,92,255,.1)}
+.card h2{margin:0 0 10px;font-size:19px}.card h3{margin:14px 0 6px;font-size:16px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.grid .card{margin:0}
+.btn{border:0;border-radius:999px;padding:10px 20px;font-weight:600;cursor:pointer;background:var(--g);color:#fff;box-shadow:0 6px 16px rgba(123,92,255,.28);transition:transform .12s,filter .15s}
+.btn:hover{filter:brightness(1.1)}.btn:active{transform:scale(.97)}
+.btn.s{background:#fff;color:var(--c2);border:1px solid var(--c4);box-shadow:none}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+label{display:block;font-size:14px;color:var(--mut);margin-bottom:4px}
+input,select{width:100%;padding:10px 12px;border:1px solid var(--c4);border-radius:12px;background:#fff;min-height:44px}
+:focus-visible{outline:3px solid var(--c3);outline-offset:2px}
+.f{flex:1;min-width:130px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.chip{border:1px solid var(--c4);background:var(--c5);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:14px}
+.res{font-size:30px;font-weight:700;color:var(--c1);word-break:break-all}
+.steps{list-style:none;margin:8px 0;padding:0}
+.steps li{padding:7px 12px;margin:6px 0;border-left:4px solid var(--c3);background:#f6f3ff;border-radius:0 12px 12px 0;word-break:break-word}
+.box{background:var(--c5);border-radius:14px;padding:10px 14px;margin:8px 0}
+.bad{background:#fdeaea;color:#a02525;border-radius:14px;padding:12px 14px}
+.good{color:#12805c;font-weight:600}
+.opt{display:block;width:100%;text-align:left;padding:12px 14px;margin:8px 0;border:1px solid var(--c4);border-radius:14px;background:#fff;cursor:pointer;transition:transform .12s,background .15s}
+.opt:hover:not(:disabled){background:var(--c5)}.opt:active:not(:disabled){transform:scale(.99)}
+.opt.ok{background:#e2f6ee;border-color:#12805c}.opt.no{background:#fdeaea;border-color:#c0392b}
+.bar{height:10px;border-radius:99px;background:var(--c5);overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--c3),var(--c2));border-radius:99px;transition:width .5s var(--e)}
+.les{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid var(--ln);background:#fff;border-radius:16px;padding:12px 16px;margin:8px 0;cursor:pointer;transition:transform .12s,box-shadow .2s}
+.les:hover{box-shadow:0 6px 18px rgba(123,92,255,.15)}.les:active{transform:scale(.99)}
+.view.anim{animation:rise .3s var(--e)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+.tab{display:none}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--c1);color:#fff;padding:9px 18px;border-radius:99px;z-index:50}
+#toast[hidden]{display:none}
+@media(max-width:720px){.app{display:block}aside{display:none}main{padding:8px 12px 110px}.top{border-radius:0 0 24px 24px;margin:-8px -12px 16px;padding:18px 20px}.tab{display:flex;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:30;background:linear-gradient(135deg,#7B5CFF,#5B21B6);border-radius:28px;padding:6px;box-shadow:0 14px 30px rgba(91,33,182,.4)}.tab button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;border:0;background:none;color:rgba(255,255,255,.9);font-size:10px;padding:6px 0;border-radius:22px;min-width:0;cursor:pointer}.tab .ic{width:21px;height:21px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+.logo{width:44px;height:44px;border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,.25);flex:none}
+.logo.big{width:76px;height:76px;border-radius:20px;display:block;margin-bottom:10px;box-shadow:0 10px 24px rgba(123,92,255,.35)}
+.top{display:flex;align-items:center;gap:12px}.top .logo.sm{display:none;width:46px;height:46px}
+.grid .card{border-top:5px solid var(--c2)}.grid .card:nth-child(2){border-top-color:#14B8A6}.grid .card:nth-child(3){border-top-color:#F97316}.grid .card:nth-child(4){border-top-color:#22C55E}
+table.t{border-collapse:collapse;width:100%;text-align:center}table.t th,table.t td{border:1px solid var(--ln);padding:4px 8px}table.t th{background:var(--c5)}
+.sx{font-size:22px;text-align:right;min-height:56px}
+.sr{min-height:46px;text-align:right;font-size:28px;font-weight:600;color:var(--c1);margin:6px 2px 12px;word-break:break-all}
+.kp{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.key{border:1px solid var(--c4);background:#fff;border-radius:14px;min-height:46px;font-size:16px;cursor:pointer;transition:transform .1s,background .15s}
+.key:hover{background:var(--c5)}.key:active{transform:scale(.95)}
+.key.f{background:var(--c5);font-size:14px}.key.o{background:#ede9fe;color:var(--c1)}.key.eq{background:var(--g);color:#fff;border:0;font-size:22px}.key.ac{background:#fee2e2;border-color:#fecaca}
+@media(max-width:720px){.top .logo.sm{display:block}}
+html,body{max-width:100%;overflow-x:hidden}
+.card p,.card li,.steps li,.box{overflow-wrap:anywhere}
+aside{overflow-y:auto}
+.key{min-width:0;padding:0}
+.top>div{min-width:0}
+@media(max-width:720px){
+main{padding:8px 10px 108px}
+.top{margin:-8px -10px 14px;padding:16px;gap:10px}.top h1{font-size:20px;line-height:1.3}.top p{font-size:13px}
+.card{padding:16px;border-radius:20px}
+.res{font-size:26px}
+.btn{min-height:44px;padding:9px 16px}
+.chip{padding:8px 14px}
+.kp{gap:6px}.key{min-height:48px;font-size:17px}.key.f{font-size:12.5px}.key.eq{font-size:22px}
+.sx{font-size:20px}.sr{font-size:24px}
+table.t{font-size:13px}table.t th,table.t td{padding:3px 4px}
+.tab{left:8px;right:8px;padding:5px}
+.tab button{font-size:10px;padding:6px 0;letter-spacing:-.2px;overflow:hidden;white-space:nowrap}
+.tab .ic{width:20px;height:20px}
+}
+@media(max-width:380px){.tab button{font-size:9px}.tab .ic{width:18px;height:18px}.key.f{font-size:11.5px}.card{padding:14px}.top h1{font-size:18px}}
+
+:root{--ln:#E5DEFF}
+body{background:radial-gradient(45% 30% at 8% 4%,rgba(123,92,255,.22),transparent 70%),radial-gradient(45% 30% at 96% 45%,rgba(123,92,255,.16),transparent 70%),#E8E0FF}
+aside{background:#4C1D95;box-shadow:0 14px 34px rgba(76,29,149,.38);border-radius:28px}
+#nav button[aria-current=page]{background:#6D28D9;color:#fff}
+.top{background:none;box-shadow:none;color:var(--ink);padding:6px 4px 0;margin-bottom:12px}
+.top h1{font-size:26px;color:var(--ink)}.top p{color:var(--mut);opacity:1}
+.tg{margin-left:auto;border:1.5px solid #C4B5FD;background:#fff;color:var(--c1);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;flex:none}
+.card{border:0;border-radius:24px;box-shadow:0 8px 24px rgba(123,92,255,.12)}
+.card h2{font-size:20px}
+.btn{background:#7B5CFF;border-radius:16px;box-shadow:0 8px 18px rgba(123,92,255,.3)}
+.btn.s{background:#fff;color:#7B5CFF;border:1.5px solid #C4B5FD;box-shadow:none}
+.btn.big{display:block;width:100%;padding:14px;font-size:17px;border-radius:18px;margin-top:12px}
+.btn:disabled{opacity:.5;cursor:default;box-shadow:none}
+input,select{border:1.5px solid var(--ln);background:#F8F6FF;border-radius:14px}
+.mut{color:var(--mut);margin:8px 0 0;font-size:14px}
+.sr-only,.hid{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);opacity:0;pointer-events:none}
+.bchips{display:flex;gap:8px}
+.bc{flex:1;min-width:0;border:1.5px solid #1F2937;background:#fff;border-radius:14px;padding:9px 4px;font-weight:500;cursor:pointer;transition:transform .12s,background .15s}
+.bc:active{transform:scale(.96)}
+.bc.on{background:#7B5CFF;border-color:#7B5CFF;color:#fff;box-shadow:0 6px 14px rgba(123,92,255,.35)}
+.resbox{background:#E9E3FF;border-radius:16px;padding:14px;font-size:18px;margin:16px 0 0;overflow-wrap:anywhere}
+.more{margin-top:14px}.more summary{cursor:pointer;color:var(--c1);font-weight:500}
+.bigline{font-size:26px;font-weight:600;color:var(--c1);margin:10px 0;overflow-wrap:anywhere}
+.steps{counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding:12px 14px 12px 54px;border:0;background:#fff;border-radius:16px;box-shadow:0 4px 14px rgba(123,92,255,.1);margin:10px 0}
+.steps li::before{content:counter(s);position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:#7B5CFF;color:#fff;display:grid;place-items:center;font-weight:600;font-size:14px}
+.sumok{display:flex;gap:12px;align-items:center;background:#22C55E;color:#fff;border-radius:18px;padding:14px 16px;margin-top:14px}
+.sumok small{display:block;opacity:.9}.sumok b{font-size:17px;overflow-wrap:anywhere}
+.ck2{flex:none;width:34px;height:34px;border-radius:50%;background:#fff;color:#22C55E;display:grid;place-items:center;font-weight:700}
+.hello{display:flex;gap:12px;align-items:center;margin:4px 0 12px}
+.hello b{display:block;font-size:20px;line-height:1.2}.hello small{color:var(--mut)}
+.statp{background:linear-gradient(135deg,#7B5CFF,#5B21B6);color:#fff;border-radius:24px;padding:18px;margin:0 0 14px;box-shadow:0 12px 26px rgba(91,33,182,.3)}
+.statp .big{font-size:26px;font-weight:600;line-height:1.3}.statp small{opacity:.9}
+.stat4{display:none}
+.s4{border-radius:20px;padding:14px;color:#fff}.s4 small{display:block;opacity:.9}.s4 b{font-size:24px}
+.s4.p{background:#7B5CFF}.s4.t{background:#14B8A6}.s4.o{background:#F97316}.s4.y{background:#FBBF24;color:#422006}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tile{position:relative;text-align:left;border:0;border-radius:22px;padding:14px;min-height:132px;color:#fff;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;box-shadow:0 10px 22px rgba(0,0,0,.12);transition:transform .2s,box-shadow .2s;animation:rise .45s var(--e) backwards}
+.tile:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(0,0,0,.18)}.tile:active{transform:scale(.97)}
+.tile b{font-size:18px;line-height:1.2}.tile small{opacity:.92;font-size:13px}
+.ti{position:absolute;left:14px;top:14px;width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.24);display:grid;place-items:center}
+.ta{position:absolute;right:14px;top:10px;font-size:24px;opacity:.85}
+.t1{background:linear-gradient(135deg,#7B5CFF,#5B21B6)}.t2{background:linear-gradient(135deg,#14B8A6,#0D9488)}.t3{background:linear-gradient(135deg,#3B82F6,#2563EB)}
+.t4{background:linear-gradient(135deg,#F97316,#EA580C)}.t5{background:linear-gradient(135deg,#FBBF24,#F59E0B);color:#422006}.t6{background:linear-gradient(135deg,#22C55E,#16A34A)}
+.two{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}.two .card{margin:0}
+.li{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--ln)}
+.li:last-child{border:0}.li b{overflow-wrap:anywhere}.li small{color:var(--mut);white-space:nowrap}
+.wk{display:flex;align-items:flex-end;gap:8px;height:150px}
+.wb{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;min-width:0}
+.wb i{display:block;width:100%;max-width:30px;border-radius:8px 8px 3px 3px;background:#7B5CFF;transform-origin:bottom}
+.wb:nth-child(even) i{background:#14B8A6}
+.wb span{font-size:11px;color:var(--mut);min-height:14px}.wb small{font-size:12px;color:var(--mut)}
+@keyframes grow{from{transform:scaleY(0)}}
+#v.anim .wb i{animation:grow .7s var(--e) backwards}
+.rg{position:relative;width:170px;height:170px;margin:6px auto}.rg svg{width:100%;height:100%}
+.rgt{position:absolute;inset:0;display:grid;place-items:center;font-size:38px;font-weight:700;color:var(--c1)}
+@keyframes ring{from{stroke-dasharray:0 400}}
+#v.anim .rgf{animation:ring 1.2s var(--e)}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.stats3>div{background:#fff;border-radius:16px;padding:10px 6px;text-align:center;box-shadow:0 6px 16px rgba(123,92,255,.1)}
+.stats3 b{display:block;font-size:18px}.stats3 small{color:var(--mut);font-size:12.5px}
+.sec{font-weight:600;margin:16px 2px 6px}
+.hi{display:flex;gap:12px;align-items:center;border-radius:18px;padding:12px 14px;margin:10px 0}
+.hic{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.7);display:grid;place-items:center;flex:none}
+.hi small{display:block;color:#4B5563}
+.hi.g{background:#BBF7D0}.hi.o{background:#FED7AA}.hi.p{background:#E9E3FF}
+.les{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-radius:20px;padding:12px;margin:10px 0;background:#fff;box-shadow:0 6px 16px rgba(123,92,255,.1);cursor:pointer}
+.lic{width:48px;height:48px;border-radius:14px;background:#7B5CFF;color:#fff;display:grid;place-items:center;flex:none}
+.les.cur{background:#99F6E4}.les.cur .lic{background:#14B8A6}
+.les.qz{background:#FDE68A}.les.qz .lic{background:#FBBF24;color:#422006}
+.lt{flex:1;min-width:0}.lt b{display:block;font-size:15px;line-height:1.35}.lt small{color:#4B5563;font-size:12.5px}
+.ck{width:28px;height:28px;border-radius:50%;background:#22C55E;color:#fff;display:grid;place-items:center;flex:none}
+.qchip{display:inline-block;background:#7B5CFF;color:#fff;border-radius:999px;padding:3px 12px;font-size:13px;margin-bottom:10px}
+.qq{background:#FED7AA;border-radius:16px;padding:12px 14px;font-weight:500;margin:12px 0}
+.opt{border:0;background:#E5E7EB;border-radius:16px;padding:14px;font-size:18px;font-weight:500;margin:10px 0}
+.opt:hover:not(:disabled){background:#DDD6FE}
+.opt.sel{background:#7B5CFF;color:#fff}
+.opt.ok{background:#22C55E;color:#fff;animation:pulse .5s}
+.opt.no{background:#FCA5A5;animation:shake .4s}
+.opt:disabled{opacity:1;cursor:default}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.hint{display:flex;gap:10px;align-items:flex-start;background:#FDE68A;border-radius:16px;padding:12px 14px;margin:12px 0}
+.hint .ic{flex:none;color:#92400E}
+.key{border:0;background:#F3EFFF}.key.f{background:#E9E3FF}.key.o{background:#DDD6FE}.key.eq{background:#7B5CFF}.key.ac{background:#FEE2E2}
+.splash{position:fixed;inset:0;z-index:100;background:linear-gradient(165deg,#7B5CFF,#5B21B6);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:0 24px calc(40px + env(safe-area-inset-bottom,0px));transition:opacity .4s,transform .4s}
+.splash.out{opacity:0;transform:scale(1.03);pointer-events:none}
+.sp-in{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.logo.xl{width:104px;height:104px;border-radius:28px;box-shadow:0 18px 40px rgba(0,0,0,.3);animation:pop .7s cubic-bezier(.34,1.56,.64,1) both,breathe 3s ease-in-out .8s infinite}
+.splash h1{font-size:44px;margin:16px 0 0;color:#fff;animation:rise .5s .25s both}
+.splash p{margin:4px 0 0;opacity:.92;font-size:17px;animation:rise .5s .35s both}
+.sp-btn{width:100%;max-width:360px;border:0;border-radius:18px;background:#fff;color:#5B21B6;font-size:18px;font-weight:600;padding:15px;cursor:pointer;animation:pop .5s .6s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pop{from{opacity:0;transform:scale(.8)}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes fabf{0%,100%{transform:translateY(-22px)}50%{transform:translateY(-27px)}}
+.qm{display:none}
+body.noanim *,body.noanim *::before,body.noanim *::after{animation:none!important;transition:none!important}
+@media(min-width:721px){.statp{display:none}.stat4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}.tiles{grid-template-columns:repeat(3,1fr)}.two{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){
+.top{margin:0 0 10px;border-radius:0;padding:4px 2px;gap:10px}.top h1{font-size:22px}
+.tab{left:0;right:0;bottom:0;border-radius:26px 26px 0 0;background:#fff;box-shadow:0 -8px 24px rgba(123,92,255,.16);padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));align-items:flex-end}
+.tab button{color:#6B7280;font-size:11px;gap:2px;padding:4px 0;min-height:48px;border-radius:14px}
+.tab button[aria-current=page]{background:none;color:#7B5CFF;font-weight:600}
+.tab .fab{flex:none;width:58px;height:58px;border-radius:50%;background:#7B5CFF;color:#fff;margin:0 6px;transform:translateY(-22px);box-shadow:0 10px 22px rgba(123,92,255,.5);display:grid;place-items:center;animation:fabf 2s ease-in-out infinite;padding:0;min-height:0}
+.tab .fab .ic{width:28px;height:28px}
+.tab .fab:active{animation:none;transform:translateY(-22px) scale(.9) rotate(90deg)}
+.qm{display:grid;position:fixed;left:16px;right:16px;bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:40;gap:8px;background:#fff;border-radius:22px;padding:10px;box-shadow:0 14px 34px rgba(76,29,149,.3);animation:rise .25s var(--e)}
+.qm[hidden]{display:none}
+.qm button{display:flex;align-items:center;gap:12px;border:0;background:#F3EFFF;border-radius:14px;padding:12px 14px;font-size:16px;color:var(--c1);cursor:pointer}
+.toast{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+.tg{padding:4px 10px;font-size:12px}
+}
+</style>
+</head>
+<body>
+<div id="splash" class="splash" role="dialog" aria-label="เริ่มต้น"><div class="sp-in"><img class="logo xl" data-logo alt="โลโก้ BaseLab"><h1>BaseLab</h1><p>เครื่องมือเรียนรู้ระบบเลขฐาน</p></div><button class="sp-btn" id="spgo">เริ่มใช้งาน</button></div>
+<div class="app">
+<aside><div class="brand"><img class="logo" id="logo" alt="BaseLab" width="44" height="44" src="data:image/webp;base64,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"><div><b>BaseLab</b><small>เรียนรู้และแปลงเลขฐาน</small></div></div><nav id="nav" aria-label="เมนูหลัก"></nav></aside>
+<main id="main"><header class="top"><img class="logo sm" data-logo alt=""><div><h1 id="ttl"></h1><p id="sub"></p></div><button id="anim" class="tg" aria-pressed="true" title="เปิด/ปิดแอนิเมชัน">แอนิเมชัน: เปิด</button></header><div id="v" class="view" aria-live="polite"></div></main>
+</div>
+<nav class="tab" id="tab" aria-label="เมนูล่าง"></nav>
+<div id="qm" class="qm" hidden></div>
+<div id="toast" role="status" hidden></div>
+<noscript>เว็บไซต์นี้ต้องเปิดใช้ JavaScript</noscript>
+<script>
+'use strict';
+/* ===== ส่วนคำนวณ (ไม่แตะ DOM) ===== */
+const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const DG='0123456789ABCDEF',MAXD=64,SUBS='₀₁₂₃₄₅₆₇₈₉',SUPS='⁰¹²³⁴⁵⁶⁷⁸⁹';
+const sb=b=>String(b).replace(/\d/g,d=>SUBS[d]),sp=n=>String(n).replace(/\d/g,d=>SUPS[d]);
+const BN={2:'ฐาน 2 (Binary)',8:'ฐาน 8 (Octal)',10:'ฐาน 10 (Decimal)',16:'ฐาน 16 (Hexadecimal)'},RNG={2:'0–1',8:'0–7',10:'0–9',16:'0–9 และ A–F'};
+const dv=c=>DG.indexOf(c),norm=s=>s.replace(/^0+(?=.)/,''),str=(n,b)=>n.toString(b).toUpperCase();
+const val=(s,b)=>{let n=0n;const B=BigInt(b);for(const c of s)n=n*B+BigInt(dv(c));return n};
+const ok=(s,b)=>s.length>0&&[...s].every(c=>dv(c)>=0&&dv(c)<b);
+const nz=s=>{let[i,f='']=s.toUpperCase().split('.');i=norm(i||'0');f=f.replace(/0+$/,'');return i+(f?'.'+f:'')};
+const PB={2:1,8:3,16:4},pw=p=>p<0?'⁻'+sp(-p):sp(p);
+function err(s,b){
+ if(!s)return 'กรุณากรอกตัวเลขก่อน';
+ if(/\s/.test(s))return 'ห้ามมีช่องว่างแทรกในตัวเลข';
+ if((s.match(/\./g)||[]).length>1)return 'มีจุดทศนิยมได้ไม่เกิน 1 จุด';
+ const d=s.replace('.','');
+ if(!d)return 'ต้องมีตัวเลขอย่างน้อย 1 หลัก';
+ if(d.length>MAXD)return `ตัวเลขยาวเกิน ${MAXD} หลัก`;
+ const bad=[...new Set([...d.toUpperCase()].filter(c=>dv(c)<0||dv(c)>=b))];
+ return bad.length?`“${E(s)}” ไม่ถูกต้องสำหรับฐาน ${b}: ฐานนี้ใช้ได้เฉพาะ ${RNG[b]} แต่พบอักขระ ${bad.map(E).join(', ')}`:'';
+}
+function conv(s,f,t,dp=4){
+ if(f==t)return nz(s);
+ const[i0,f0='']=s.toUpperCase().split('.'),I=val(norm(i0||'0'),f),len=f0.length,den=BigInt(f)**BigInt(len),num=val(f0||'0',f),r=str(I,t);
+ if(!len||num==0n)return r;
+ if(t==10){const p=PB[f],x=(num*5n**BigInt(p*len)).toString().padStart(p*len,'0').replace(/0+$/,'');return r+(x?'.'+x:'')}
+ let d='',n=num,k=0;while(n>0n&&k<(f==10?dp:200)){n*=BigInt(t);d+=DG[Number(n/den)];n%=den;k++}
+ return r+(d?'.'+d:'');
+}
+function explain(s,f,t,dp=4){
+ s=s.toUpperCase();const[i0,F='']=s.split('.'),I=norm(i0||'0'),B=BigInt,L=[],g=x=>PB[x]||0,src=I+(F?'.'+F:'');let fo='',why='',res='',nt='';
+ if(f==t){fo='ค่าเท่าเดิม';why='ฐานต้นทางและปลายทางเหมือนกัน จึงไม่ต้องคำนวณ';L.push('ฐานเหมือนกัน ค่าจึงไม่เปลี่ยน');res=nz(src)}
+ else if(f==10){
+  fo=`ส่วนจำนวนเต็ม: หารด้วย ${t} ซ้ำจนผลหารเป็น 0 แล้วอ่านเศษจากล่างขึ้นบน${F?` · ส่วนทศนิยม: คูณด้วย ${t} ซ้ำ แล้วเก็บเลขหน้าจุดของผลคูณ`:''}`;
+  why=`เศษรอบแรกคือ LSB (หลักขวาสุด) รอบสุดท้ายคือ MSB (หลักซ้ายสุด) จึงต้องอ่านย้อนกลับ${F?' ส่วนทศนิยมใช้การคูณ เลขหน้าจุดของรอบแรกคือ MSD และรอบสุดท้ายคือ LSD':''}`;
+  const n=B(I);let ir='';
+  if(n==0n){L.push('ส่วนจำนวนเต็มเป็น 0 จึงได้ 0');ir='0'}
+  else{let q=n,k=0;const m=[];while(q>0n){const r=q%B(t),nq=q/B(t);k++;m.push(`ขั้นตอนที่ ${k}: นำ ${q} หารด้วย ${t} ได้ผลหาร ${nq} เศษ ${r}${r>9n?` (แทนด้วย ${DG[Number(r)]})`:''}`);ir=DG[Number(r)]+ir;q=nq}
+   m[0]+=' ← LSB';m[m.length-1]+=' ← MSB';L.push(...m);L.push(`อ่านเศษจากล่างขึ้นบน ได้ ${ir}${sb(t)}`)}
+  res=ir;
+  if(F&&val(F,10)>0n){const k=F.length,sc=10n**B(k);let fn=val(F,10),d='',i=0;
+   L.push(`ส่วนทศนิยม 0.${F}: คูณด้วย ${t} ทีละรอบ (ตอบทศนิยม ${dp} ตำแหน่ง)`);
+   while(fn>0n&&i<dp){const p=fn*B(t),dg=p/sc,rm=p%sc;i++;L.push(`0.${String(fn).padStart(k,'0')} × ${t} = ${dg}.${String(rm).padStart(k,'0')} ⇒ ${DG[Number(dg)]}${dg>9n?` (${dg} แทนด้วย ${DG[Number(dg)]})`:''}${i==1?' ← MSD':''}`);d+=DG[Number(dg)];fn=rm}
+   L[L.length-1]+=' ← LSD';res=ir+'.'+d;if(fn>0n)nt=`ตัดทศนิยมที่ ${dp} ตำแหน่ง (ไม่ปัดเศษ) จึงเป็นค่าประมาณ`;
+   L.push(`ดังนั้น ส่วนทศนิยม = 0.${d}${sb(t)}`)}
+ }else if(t==10){
+  fo=`ค่า = ผลรวมของ (ค่าหลัก × ${f}^ตำแหน่ง) หลักหน้าจุดนับจากขวาเริ่มที่ 0 หลักหลังจุดนับเป็น −1, −2, …`;
+  why=`แต่ละหลักมีน้ำหนักตามตำแหน่ง ตำแหน่งที่ k มีน้ำหนัก ${f}^k จึงนำค่าหลักคูณน้ำหนักแล้วรวมกัน`;
+  const p=PB[f],ds=[...I].map((c,i)=>[c,I.length-1-i]).concat([...F].map((c,i)=>[c,-(i+1)])),sc=F.length*p;
+  const pv=po=>po>=0?(B(f)**B(po)).toString():'0.'+(5n**B(p*-po)).toString().padStart(p*-po,'0');
+  const term=([c,po])=>{const d=B(dv(c));if(po>=0)return(d*B(f)**B(po)).toString();if(d==0n)return'0';return'0.'+(d*5n**B(p*-po)).toString().padStart(p*-po,'0').replace(/0+$/,'')};
+  L.push(`${src}${sb(f)} = ${ds.map(([c,po])=>`${c}×${f}${pw(po)}`).join(' + ')}`);
+  L.push(`= ${ds.map(([c,po])=>`${dv(c)}×${pv(po)}`).join(' + ')}`);
+  L.push(`= ${ds.map(term).join(' + ')}`);
+  let isum=0n,fsum=0n;ds.forEach(([c,po])=>{const d=B(dv(c));if(po>=0)isum+=d*B(f)**B(po);else fsum+=d*5n**B(p*-po)*10n**B(sc-p*-po)});
+  const fs=sc?fsum.toString().padStart(sc,'0').replace(/0+$/,''):'';res=String(isum)+(fs?'.'+fs:'');
+  L.push(`= ${res}`);L.push(`ดังนั้น ${src}${sb(f)} = ${res}${sb(10)}`);
+  if(ds.some(([c])=>dv(c)>9))L.push('หมายเหตุ: A=10, B=11, C=12, D=13, E=14, F=15');
+ }else{
+  fo=f==2?`เขียนเลขฐานสอง ${g(t)} บิตแทน 1 หลักของฐาน ${t} (ถ้าไม่ครบให้เติม 0)`:t==2?`เขียนแต่ละหลักเป็นเลขฐานสอง ${g(f)} บิต แล้วต่อกัน`:`แปลงเป็นฐาน 2 ก่อน แล้วจัดกลุ่มบิตทีละ ${g(t)} บิตเป็นฐาน ${t}`;
+  why='เพราะ 8 = 2³ และ 16 = 2⁴ หนึ่งหลักของฐาน 8 จึงตรงกับ 3 บิต และหนึ่งหลักของฐาน 16 ตรงกับ 4 บิต จึงแปลงผ่านฐาน 2 ได้โดยไม่ต้องหาร';
+  let bi=I,bf=F;
+  if(f!=2){const cv=x=>[...x].map(c=>dv(c).toString(2).padStart(g(f),'0')),ai=cv(I),af=cv(F);
+   L.push(`เขียนแต่ละหลักเป็น ${g(f)} บิต: ${ai.map((b,i)=>`${I[i]}→${b}`).join('  ')}${F?' . '+af.map((b,i)=>`${F[i]}→${b}`).join('  '):''}`);
+   bi=ai.join('');bf=af.join('');L.push(`ต่อบิตกัน: ${bi}${F?'.'+bf:''}`)}
+  if(t==2){const fz=bf.replace(/0+$/,'');res=norm(bi)+(fz?'.'+fz:'');L.push(`ตัดศูนย์นำหน้า${F?'และศูนย์ท้ายทศนิยม':''}ออก ได้ ${res}${sb(2)} (เขียนศูนย์นำหน้าไว้ก็ได้ ค่าเท่ากัน)`)}
+  else{const gt=g(t),pi=(gt-bi.length%gt)%gt,pf=F?(gt-bf.length%gt)%gt:0,P=bi.padStart(bi.length+pi,'0'),Q=bf.padEnd(bf.length+pf,'0'),gi=P.match(new RegExp(`.{${gt}}`,'g')),gf=Q?Q.match(new RegExp(`.{${gt}}`,'g')):[],dg=x=>DG[parseInt(x,2)];
+   L.push(`เติม 0 ให้ครบกลุ่มละ ${gt} บิต (จำนวนเต็มเติมทางซ้าย ทศนิยมเติมทางขวา): ${P}${F?'.'+Q:''}`);
+   L.push(`แบ่งกลุ่มละ ${gt} บิต: ${gi.join(' ')}${gf.length?' . '+gf.join(' '):''}`);
+   L.push(`แต่ละกลุ่มแทนด้วยหลักของฐาน ${t}: ${gi.map(x=>`${x}=${dg(x)}`).join('  ')}${gf.length?' . '+gf.map(x=>`${x}=${dg(x)}`).join('  '):''}`);
+   const ri=norm(gi.map(dg).join('')),rf=gf.map(dg).join('').replace(/0+$/,'');res=ri+(rf?'.'+rf:'');L.push(`ดังนั้น ${src}${sb(f)} = ${res}${sb(t)}`)}
+ }
+ const exact=!nt,ref=conv(src,f,t,dp),back=exact?conv(res,t,f,dp+24):conv(res,t,10);
+ return{L,fo,why,res,nt,back,exact,okv:res===ref&&(!exact||nz(back)===nz(src))};
+}
+function calcS(a,b,B,op){
+ a=norm(a.toUpperCase());b=norm(b.toUpperCase());const A=val(a,B),C=val(b,B),L=[];let x=a,y=b,neg=false;
+ if(op=='-'&&A<C){neg=true;x=b;y=a;L.push(`${a} < ${b} ผลจึงเป็นลบ: คำนวณ ${b} − ${a} แล้วใส่เครื่องหมายลบหน้าคำตอบ`)}
+ const n=Math.max(x.length,y.length),X=x.padStart(n,'0'),Y=y.padStart(n,'0');let c=0,o='';
+ L.push(`จัดเลขให้ตรงหลักจากขวา: ${X} และ ${Y} (ค่าของแต่ละหลักเขียนเป็นเลขฐาน 10)`);
+ for(let i=n-1;i>=0;i--){const dx=dv(X[i]),dy=dv(Y[i]),k=n-i;
+  if(op=='+'){const s=dx+dy+c,d=s%B,nc=Math.floor(s/B);L.push(`หลักที่ ${k} จากขวา: ${dx} + ${dy}${c?` + ทด ${c}`:''} = ${s} → เขียน ${DG[d]}${nc?` ทด ${nc}`:''}`);o=DG[d]+o;c=nc}
+  else{let s=dx-dy-c,bw=0;if(s<0){s+=B;bw=1}L.push(`หลักที่ ${k} จากขวา: ${dx} − ${dy}${c?` − ยืม ${c}`:''}${bw?` ติดลบ จึงยืม 1 (บวก ${B}) ได้ ${s}`:` = ${s}`} → เขียน ${DG[s]}`);o=DG[s]+o;c=bw}}
+ if(op=='+'&&c){L.push(`ทดสุดท้าย ${c} → เขียนนำหน้า`);o=DG[c]+o}
+ let res=norm(o);if(neg&&res!='0')res='-'+res;
+ const e=op=='+'?A+C:A-C,es=(e<0n?'-':'')+str(e<0n?-e:e,B);
+ return{L,res,okv:res===es,dec:`${A} ${op=='+'?'+':'−'} ${C} = ${e}`};
+}
+const R=n=>Math.floor(Math.random()*n),pick=a=>a[R(a.length)],shuf=a=>{for(let i=a.length-1;i>0;i--){const j=R(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+function four(c,b){
+ const v=val(c,b),s=new Set([c]);let g=0;
+ const mk=()=>pick([()=>str(v+BigInt(1+R(5)),b),()=>v>5n?str(v-BigInt(1+R(5)),b):'',()=>[...c].reverse().join(''),()=>{const a=[...c];a[R(a.length)]=DG[R(b)];return a.join('')},()=>c.length>1?c.slice(1)+c[0]:''])();
+ while(s.size<4&&g++<400){const y=norm(String(mk()));if(y&&y!==c&&ok(y,b))s.add(y)}
+ for(let k=1n;s.size<4;k++)s.add(str(v+k+5n,b));
+ return shuf([...s]);
+}
+function mkQ(k){
+ let q,c,b=10,o,ex,v;
+ if(k==1){const t=pick([2,8,16]),n=10+R(246);b=t;c=str(BigInt(n),t);v=n;q=`แปลง ${n}${sb(10)} เป็นฐาน ${t} ได้ผลลัพธ์ใด`;ex=`หาร ${n} ด้วย ${t} ซ้ำแล้วอ่านเศษย้อนกลับ ได้ ${c}${sb(t)}`}
+ else if(k==2){const f=pick([2,8,16]),n=8+R(248);c=String(n);v=n;q=`${str(BigInt(n),f)}${sb(f)} มีค่าเท่าใดในฐาน 10`;ex=`กระจายตามกำลังของ ${f} แล้วรวมค่า ได้ ${n}`}
+ else if(k==3){const[f,t]=pick([[2,8],[2,16],[8,2],[16,2],[8,16],[16,8]]),n=16+R(240);b=t;c=str(BigInt(n),t);v=n;q=`แปลง ${str(BigInt(n),f)}${sb(f)} เป็นฐาน ${t}`;ex=`แปลงผ่านบิต (ฐาน 2) ได้ ${c}${sb(t)} ตรวจย้อนกลับค่าฐาน 10 = ${n}`}
+ else if(k==4){const B=pick([2,8,16]),x=20+R(200),y=3+R(x-3),op=pick(['+','-']),r=op=='+'?x+y:x-y,sy=op=='+'?'+':'−';b=B;c=str(BigInt(r),B);v=r;q=`${str(BigInt(x),B)} ${sy} ${str(BigInt(y),B)} (ฐาน ${B}) ได้เท่าใด`;ex=`ตรวจด้วยฐาน 10: ${x} ${sy} ${y} = ${r} แล้วแปลงเป็นฐาน ${B} ได้ ${c}`}
+ else if(k==5){
+  if(R(2)){const B=pick([2,8]);b=B;c=str(BigInt(5+R(120)),B);v=-1;q=`ข้อใดเป็นเลขฐาน ${B} ที่เขียนถูกต้อง`;
+   const s=new Set([c]);while(s.size<4){const a=[...str(BigInt(5+R(120)),B)];a[R(a.length)]=String(B+R(10-B));s.add(a.join(''))}
+   o=shuf([...s]);ex=`ฐาน ${B} ใช้ได้เฉพาะ ${RNG[B]} ตัวเลือกอื่นมีหลักที่ไม่อยู่ในชุดนี้`;return{q,o,a:o.indexOf(c),ex,b,k:'5a',v}}
+  const t=pick([8,16]),n=20+R(200);c=String(n%t);v=n%t;q=`แปลง ${n}${sb(10)} เป็นฐาน ${t} ด้วยการหารซ้ำ เศษที่ได้จากการหารครั้งแรกคือข้อใด (เขียนเป็นเลขฐาน 10)`;
+  const s=new Set([c]);while(s.size<4)s.add(String(R(t)));o=shuf([...s]);ex=`${n} ÷ ${t} ได้เศษ ${c} เศษรอบแรกคือหลักขวาสุดของคำตอบ`;return{q,o,a:o.indexOf(c),ex,b:0,k:'5b',v}}
+ else{const n=20+R(230);b=2;c=str(BigInt(n),2);v=n;q=`ข้อใดเมื่อแปลงกลับเป็นฐาน 10 แล้วได้ ${n}`;ex=`${c}${sb(2)} = ${n}${sb(10)}`}
+ o=four(c,b);return{q,o,a:o.indexOf(c),ex,b:k==2?10:b,k,v};
+}
+const LESSONS=[
+ {t:'ความหมายและความสำคัญของระบบเลขฐาน',b:'เลขที่ใช้ในชีวิตประจำวันคือเลขฐาน 10 (ตัวเลข 0–9) คอมพิวเตอร์ใช้ระบบเลขฐานสองเพราะวงจรอิเล็กทรอนิกส์ทำงานแบบดิจิทัลที่มี 2 สถานะ คือ เปิด (on) และปิด (off) โดยทั่วไปกำหนดเปิด = 1 และปิด = 0 (บางวงจรอาจกำหนดกลับกัน) เลขฐานสองหนึ่งหลักเรียกว่า “บิต” นอกจากนี้ยังใช้ฐานแปดและฐานสิบหก',f:'ต้องเขียนฐานกำกับท้ายตัวเลข เช่น 1001₂ อ่านว่า หนึ่ง-ศูนย์-ศูนย์-หนึ่ง · 5163₈ อ่านว่า ห้า-หนึ่ง-หก-สาม · 4F5B₁₆ อ่านว่า สี่-เอฟ-ห้า-บี',s:'ฐาน 10 ใช้ในชีวิตประจำวัน · คอมพิวเตอร์ใช้ฐาน 2 · เลขฐานสอง 1 หลัก = 1 บิต',q:'เลขฐานสองหนึ่งหลักเรียกว่าอะไร',a:['บิต','BIT']},
+ {t:'ความรู้พื้นฐานเกี่ยวกับฐาน 2, 8, 10 และ 16',b:'ฐาน 2 ใช้ 0–1 · ฐาน 8 ใช้ 0–7 · ฐาน 10 ใช้ 0–9 · ฐาน 16 ใช้ 0–9 และ A–F (A=10, B=11, C=12, D=13, E=14, F=15) ตัวเลขที่ใช้ได้ต้องน้อยกว่าฐานเสมอ',f:'ทุกหลักต้องมีค่า < ฐาน',tbl:1,s:'ฐาน n ใช้ตัวเลข 0 ถึง n−1 · ฐาน 16 ใช้ A–F แทน 10–15',q:'ในฐาน 16 ตัวอักษรใดแทนค่า 13',a:['D']},
+ {t:'การแปลงฐาน 10 เป็นฐาน 2, 8 และ 16',b:'ส่วนจำนวนเต็ม: นำเลขฐาน 10 มาตั้งหารด้วยฐานปลายทางไปเรื่อย ๆ จนผลหารเป็น 0 เก็บเศษทุกครั้ง แล้วอ่านเศษจากล่างขึ้นบน (เศษรอบแรกคือ LSB รอบสุดท้ายคือ MSB) ส่วนทศนิยม: คูณด้วยฐานปลายทางซ้ำ แล้วเก็บเลขหน้าจุดของแต่ละรอบ',f:'จำนวนเต็ม: หารซ้ำอ่านเศษย้อนกลับ · ทศนิยม: คูณซ้ำเก็บเลขหน้าจุด',s:'หารจนผลหารเป็น 0 · อ่านเศษจากล่างขึ้นบน · ทศนิยมใช้การคูณ',ex:[['39',10,2],['342',10,8],['197',10,16],['0.573',10,2]],pr:[['223',10,2],['437',10,8],['578',10,16],['0.235',10,8],['0.541',10,16]],q:'39 ฐาน 10 เท่ากับเท่าใดในฐาน 2',a:['100111']},
+ {t:'การแปลงฐาน 2, 8 และ 16 เป็นฐาน 10',b:'คูณค่าประจำหลัก (ฐาน^n) กับค่าสัมประสิทธิ์ (ตัวเลขในหลักนั้น) แล้วนำผลคูณทุกหลักมารวมกัน หลักหลังจุดทศนิยมใช้เลขชี้กำลังติดลบ',f:'ค่า = Σ (ตัวเลข × ฐาน^ตำแหน่ง)',s:'คูณค่าประจำหลักแล้วรวมกัน · หลังจุดใช้เลขชี้กำลังติดลบ',ex:[['10111',2,10],['1011.10',2,10],['3762',8,10],['B8D9',16,10]],pr:[['1101001',2,10],['1254.10',8,10],['2314.50',8,10],['36F.2A',16,10],['C69.E2',16,10]],q:'10111 ฐาน 2 เท่ากับเท่าใดในฐาน 10',a:['23']},
+ {t:'การแปลงระหว่างฐาน 2, 8 และ 16',b:'ฐาน 2→8 เขียนเลขฐานสอง 3 บิตแทนเลขฐานแปด 1 ตัว ฐาน 2→16 ใช้ 4 บิตแทนเลขฐานสิบหก 1 ตัว ถ้าไม่ครบให้เพิ่มเลข 0 ฐาน 8→2 และ 16→2 ให้เขียนแต่ละหลักเป็น 3 หรือ 4 บิต ส่วนฐาน 8↔16 ให้แปลงผ่านฐาน 2 ก่อน',f:'3 บิต = 1 หลักฐาน 8 · 4 บิต = 1 หลักฐาน 16',s:'จัดกลุ่มบิตจากจุดทศนิยมออกไป · เติม 0 ให้ครบกลุ่ม',ex:[['10101110',2,8],['00101101001',2,16],['253',8,2],['437.65',8,16]],pr:[['01101011.010',2,8],['1101010110.110',2,16],['6C5',16,2],['9AB.3E',16,8]],q:'10101110 ฐาน 2 เท่ากับเท่าใดในฐาน 8',a:['256']},
+ {t:'การบวกเลขฐาน',b:'บวกทีละหลักจากขวา ถ้าผลบวกของหลักมีค่าเกินกว่าที่แสดงได้ในหลักเดียว ต้องเพิ่มตัวทดไปยังหลักที่สูงกว่า ในฐานสอง 1 + 1 = 0 ทด 1',f:'ผลบวกหลัก = ตัวตั้ง + ตัวบวก + ตัวทด · เขียน mod ฐาน · ทด div ฐาน',s:'บวกจากขวา · ทดเมื่อผลบวก ≥ ฐาน',cx:[['11011','11101',2,'+'],['10011','10100',2,'+']],q:'11011 + 11101 ในฐาน 2 ได้เท่าใด',a:['111000']},
+ {t:'การลบเลขฐาน',b:'ถ้าตัวตั้งน้อยกว่าตัวลบ ต้องยืมหลักหน้ามา 1 ซึ่งมีค่าเท่ากับฐาน (ฐานสองยืมได้ 2) แล้วอย่าลืมหักหลักที่ถูกยืมออก 1',f:'ถ้าติดลบ: บวกฐานให้หลักนี้ และหักหลักถัดไป 1',s:'ลบจากขวา · ยืม 1 เท่ากับบวกฐาน',cx:[['11101','10110',2,'-'],['10001','1110',2,'-']],q:'10001 − 1110 ในฐาน 2 ได้เท่าใด',a:['11','0011']},
+ {t:'การฝึกแก้โจทย์และตรวจสอบคำตอบ',b:'ก่อนคำนวณให้ตรวจว่าทุกหลักใช้ได้ในฐานนั้นหรือไม่ หลังได้คำตอบให้แปลงกลับไปฐานเดิม ถ้าได้ค่าเดิมแสดงว่าถูกต้อง ลองทำโจทย์ท้ายบทด้านล่างแล้วเทียบวิธีทำ',f:'แปลงไป แล้วแปลงกลับ ต้องได้ค่าเดิม',pr:[['11011',2,10],['215',8,10],['B25',16,10],['83',10,2],['89',10,8],['47',10,16],['11101011001001',2,16],['5A2B',16,2],['101010.1',2,10]],s:'ตรวจอักขระก่อนคำนวณ · ตรวจคำตอบด้วยการแปลงกลับ',q:'1021 เป็นเลขฐาน 2 ที่ถูกต้องหรือไม่ (ตอบ ใช่ หรือ ไม่)',a:['ไม่','ไม่ถูกต้อง']}
+];
+const BANK=[['10111',2,10],['11011',2,10],['110100001',2,10],['1101001',2,10],['101010.1',2,10],['1011.10',2,10],['215',8,10],['4317',8,10],['57623',8,10],['3762',8,10],['1254.10',8,10],['2314.50',8,10],['B25',16,10],['3E1C',16,10],['273FA',16,10],['B8D9',16,10],['36F.2A',16,10],['C69.E2',16,10],['39',10,2],['223',10,2],['83',10,2],['275',10,2],['716',10,2],['0.573',10,2],['342',10,8],['437',10,8],['89',10,8],['277',10,8],['1049',10,8],['0.235',10,8],['197',10,16],['578',10,16],['47',10,16],['768',10,16],['12471',10,16],['0.541',10,16],['10101110',2,8],['01101011.010',2,8],['00101101001',2,16],['1101010110.110',2,16],['11101011001001',2,16],['253',8,2],['6C5',16,2],['5A2B',16,2],['437.65',8,16],['9AB.3E',16,8],['11011','11101',2,'+'],['10011','10100',2,'+'],['1011','1101',2,'+'],['100101','101011',2,'+'],['101011','110101',2,'+'],['11101','10110',2,'-'],['10001','1110',2,'-'],['10111','1101',2,'-'],['11010','1101',2,'-'],['111010','10111',2,'-']].map(x=>x.length==3?{k:'c',s:x[0],f:x[1],t:x[2]}:{k:'a',a:x[0],b:x[1],B:x[2],op:x[3]});
+const okd=(s,b)=>{const d=s.replace('.','');return d.length>0&&(s.match(/\./g)||[]).length<=1&&!s.startsWith('.')&&!s.endsWith('.')&&[...d].every(c=>dv(c)>=0&&dv(c)<b)};
+function four2(c,b){
+ const s=new Set([c]),seen=new Set([nz(c)]),ds=[...c].map((x,i)=>x=='.'?-1:i).filter(i=>i>=0);let g=0;
+ const mk=()=>{const a=[...c],j=pick(ds);switch(R(4)){case 0:a[j]=DG[R(b)];return a.join('');case 1:{const k=pick(ds);[a[j],a[k]]=[a[k],a[j]];return a.join('')}case 2:return c.length>1?c.slice(0,-1)+DG[R(b)]:'';default:return a.reverse().join('')}};
+ while(s.size<4&&g++<500){const y=nz(mk()||'');if(y&&!seen.has(y)&&okd(y,b)){seen.add(y);s.add(y)}}
+ for(let k=1;s.size<4;k++)s.add(c+'1'.repeat(k));
+ return shuf([...s]);
+}
+function mkB(it){let q,c,b,ex;
+ if(it.k=='c'){const x=explain(it.s,it.f,it.t);c=nz(x.res);b=it.t;q=`แปลง ${it.s}${sb(it.f)} เป็นฐาน ${it.t}${it.f==10&&it.s.includes('.')?' (ตอบทศนิยม 4 ตำแหน่ง ตัดทอนไม่ปัดเศษ)':''}`;ex=`${x.fo} ได้ ${c}${sb(it.t)}`}
+ else{const x=calcS(it.a,it.b,it.B,it.op);c=x.res;b=it.B;q=`${it.a} ${it.op=='+'?'+':'−'} ${it.b} (ฐาน ${it.B}) ได้เท่าใด`;ex=`คำนวณทีละหลักจากขวา ตรวจด้วยฐาน 10: ${x.dec} ได้ ${c}${sb(it.B)} (เขียนศูนย์นำหน้าไว้ก็ได้ ค่าเท่ากัน)`}
+ const o=four2(c,b);return{q,o,a:o.indexOf(c),ex,b,k:'B',v:c};
+}
+const BOOK=BANK.filter(x=>x.k=='c').map(x=>`<option value="${x.s}|${x.f}|${x.t}">${x.s}${sb(x.f)} → ฐาน ${x.t}</option>`).join('');
+const fmt=r=>{if(r===0)return'0';const a=Math.abs(r);if(a>=1e15||a<1e-9)return r.toExponential(8).replace(/\.?0+e/,'e');return String(+r.toPrecision(12))};
+function sciEval(src,deg){
+ const S=src.replace(/\s+/g,'').replace(/−/g,'-').replace(/×/g,'*').replace(/÷/g,'/'),T=S.match(/\d+\.?\d*|\.\d+|asin|acos|atan|sin|cos|tan|log|ln|abs|Ans|[+\-*\/^()!%²√πe]/g)||[];
+ if(!S)throw new Error('กรุณากรอกนิพจน์');if(T.join('')!==S)throw new Error('รูปแบบนิพจน์ไม่ถูกต้อง');
+ let p=0;const peek=()=>T[p],next=()=>T[p++],bad=()=>new Error('รูปแบบนิพจน์ไม่ถูกต้อง'),FN={sin:Math.sin,cos:Math.cos,tan:Math.tan,asin:Math.asin,acos:Math.acos,atan:Math.atan,log:Math.log10,ln:Math.log,abs:Math.abs,'√':Math.sqrt};
+ const rad=x=>deg?x*Math.PI/180:x,dg=x=>deg?x*180/Math.PI:x,isn=k=>/^\d|^\./.test(k);
+ const fn=(n,x)=>/^(sin|cos|tan)$/.test(n)?FN[n](rad(x)):/^a(sin|cos|tan)$/.test(n)?dg(FN[n](x)):FN[n](x);
+ const fact=x=>{if(x<0||x!==Math.floor(x)||x>170)throw new Error('คำนวณแฟกทอเรียลไม่ได้');let r=1;for(let i=2;i<=x;i++)r*=i;return r};
+ const ex=()=>{let v=tm();while(peek()=='+'||peek()=='-'){const o=next(),r=tm();v=o=='+'?v+r:v-r}return v};
+ const tm=()=>{let v=un();for(;;){const k=peek();if(k=='*'||k=='/'){next();const r=un();v=k=='*'?v*r:v/r}else if(k&&(k=='('||k=='π'||k=='e'||k=='Ans'||FN[k]||isn(k)))v*=un();else break}return v};
+ const un=()=>{if(peek()=='-'){next();return -un()}if(peek()=='+'){next();return un()}return pw()};
+ const pw=()=>{const b=po();if(peek()=='^'){next();return Math.pow(b,un())}return b};
+ const po=()=>{let v=pr();while(peek()=='!'||peek()=='%'||peek()=='²'){const o=next();v=o=='!'?fact(v):o=='%'?v/100:v*v}return v};
+ const pr=()=>{const k=next();if(k===undefined)throw new Error('นิพจน์ไม่สมบูรณ์');if(isn(k))return parseFloat(k);if(k=='π')return Math.PI;if(k=='e')return Math.E;if(k=='Ans')return sciEval.ans||0;
+  if(k=='('){const v=ex();if(next()!=')')throw new Error('วงเล็บไม่ครบ');return v}
+  if(FN[k]){if(peek()=='('){next();const v=ex();if(next()!=')')throw new Error('วงเล็บไม่ครบ');return fn(k,v)}return fn(k,pw())}
+  throw bad()};
+ const r=ex();if(p<T.length)throw bad();if(!isFinite(r))throw new Error('ไม่สามารถคำนวณได้ (หารด้วยศูนย์หรือค่าเกินช่วง)');return r;
+}
+/*UI*/
+const $=s=>document.querySelector(s);
+const IC={plus:'<path d="M12 5v14M5 12h14"/>',gauge:'<circle cx="12" cy="12" r="9"/><path d="m12 12 4-4"/>',bulb:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/>',sci:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2"/>',home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',conv:'<path d="M7 7h13l-3-3"/><path d="M17 17H4l3 3"/>',learn:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',calc:'<path d="M12 5v10M7 10h10"/><path d="M7 20h10"/>',quiz:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',prog:'<path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-4"/>'};
+const ico=p=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[p]}</svg>`;
+const PG=[['home','หน้าแรก','หน้าแรก','เครื่องมือเรียนรู้และฝึกคำนวณเลขฐาน'],['conv','แปลงเลขฐาน','แปลง','แปลงเลขฐานพร้อมวิธีทำทีละขั้นตอน'],['learn','บทเรียน','บทเรียน','8 หัวข้อ เรียนแล้วทำแบบฝึกหัดท้ายบท'],['calc','บวกและลบเลขฐาน','บวก-ลบ','คำนวณทีละหลักพร้อมการทดและการยืม'],['sci','เครื่องคิดเลขวิทยาศาสตร์','คิดเลข','ตรีโกณมิติ ลอการิทึม แฟกทอเรียล และอื่น ๆ'],['quiz','แบบฝึกหัด','ฝึกหัด','แบบทดสอบเลือกตอบ 4 ตัวเลือก สุ่มทุกครั้ง'],['prog','ความคืบหน้า','คืบหน้า','สรุปผลการเรียนในเบราว์เซอร์นี้']];
+let page='home',lesson=null,qz=null,lastRes='',pending=null,sdeg=true;
+/* ความคืบหน้า (localStorage + กรณีใช้ไม่ได้) */
+let canStore=true;try{localStorage.setItem('bl.t','1');localStorage.removeItem('bl.t')}catch(e){canStore=false}
+const P0=()=>({lessons:{},best:null,attempts:0,hist:[],conv:0,days:{},act:{},saved:[],noanim:false});
+let P=P0();
+if(canStore){try{const x=JSON.parse(localStorage.getItem('bl.v1')||'null');if(x&&typeof x=='object')P=Object.assign(P,x)}catch(e){}}
+const save=()=>{if(canStore){try{localStorage.setItem('bl.v1',JSON.stringify(P))}catch(e){canStore=false}}};
+let lastConv=null;const TB=[['home','หน้าหลัก'],['conv','แปลง'],['fab'],['learn','บทเรียน'],['quiz','ฝึกหัด']];
+const dt=ts=>new Date(ts).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'});
+const tk=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const streak=()=>{let n=0;const d=new Date();if(!P.act[tk(d)])d.setDate(d.getDate()-1);while(P.act[tk(d)]){n++;d.setDate(d.getDate()-1)}return n};
+const avg=()=>P.hist.length?Math.round(P.hist.reduce((a,h)=>a+h.s,0)/P.hist.length*10):null;
+const nDone=()=>Object.keys(P.lessons).filter(k=>P.lessons[k]).length;
+const week=()=>[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-(6-i));return{l:['อา','จ','อ','พ','พฤ','ศ','ส'][d.getDay()],n:P.days[tk(d)]||0}});
+const chart=()=>{const w=week(),m=Math.max(1,...w.map(x=>x.n));return `<div class="wk" role="img" aria-label="จำนวนการแปลง 7 วันล่าสุด">${w.map((x,i)=>`<div class="wb"><span>${x.n||''}</span><i style="height:${Math.max(4,Math.round(x.n/m*96))}px;animation-delay:${i*70}ms"></i><small>${x.l}</small></div>`).join('')}</div>`};
+function setAnim(on){document.body.classList.toggle('noanim',!on);const a=$('#anim');if(a){a.setAttribute('aria-pressed',String(on));a.textContent='แอนิเมชัน: '+(on?'เปิด':'ปิด')}P.noanim=!on;save()}
+function qmToggle(open){const m=$('#qm'),f=document.querySelector('.fab');m.hidden=!open;if(f)f.setAttribute('aria-expanded',String(open))}
+function syncChips(){const f=+$('#fb').value,t=+$('#tb').value;document.querySelectorAll('#cf .bc').forEach(b=>b.classList.toggle('on',+b.dataset.b==f));document.querySelectorAll('#ct .bc').forEach(b=>b.classList.toggle('on',+b.dataset.b==t));const fl=$('#fl');if(fl)fl.textContent='ฐานต้นทาง: ฐาน '+f}
+function cuRun(){if(document.body.classList.contains('noanim'))return;document.querySelectorAll('.cu').forEach(el=>{const to=+el.dataset.to;if(!to)return;const t0=performance.now(),st=n=>{const p=Math.min(1,(n-t0)/700);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(st)};el.textContent='0';requestAnimationFrame(st)})}
+function homeView(){const td=P.days[tk()]||0,a=avg(),nd=nDone(),T=(c,ic,t,s,go)=>`<button class="tile ${c}" data-go="${go}" style="animation-delay:${+c.slice(1)*60}ms"><span class="ti">${ico(ic)}</span><span class="ta" aria-hidden="true">›</span><b>${t}</b><small>${s}</small></button>`,S=(c,l,v)=>`<div class="s4 ${c}"><small>${l}</small><b>${v}</b></div>`,rec=P.saved.slice(0,5).map(r=>`<div class="li"><b>${E(r.s)}${sb(r.f)} → ${E(r.r)}${sb(r.t)}</b><small>${dt(r.ts)}</small></div>`).join('');
+ return `<div class="hello"><img class="logo" data-logo alt=""><div><b>สวัสดี</b><small>มาฝึกเลขฐานทีละขั้นตอนกัน</small></div></div><section class="statp"><small>สถิติการแปลงวันนี้</small><div class="big">แปลงแล้ว <span class="cu" data-to="${td}">${td}</span> ครั้ง</div><small>ทั้งหมด ${P.conv} ครั้งในเครื่องนี้</small></section><div class="stat4">${S('p','แปลงทั้งหมด',`<span class="cu" data-to="${P.conv}">${P.conv}</span> ครั้ง`)}${S('t','ความแม่นยำ',a===null?'—':a+'%')}${S('o','บทเรียนจบ',nd+'/'+LESSONS.length)}${S('y','สตรีค',streak()+' วัน')}</div><div class="tiles">${T('t1','conv','แปลงเลขฐาน','ระหว่างฐาน 2, 8, 10, 16','conv')}${T('t2','calc','บวกและลบ','ทดและยืมทีละหลัก','calc')}${T('t3','gauge','ความแม่นยำ',a===null?'ยังไม่มีคะแนน':a+'% จากแบบฝึกหัด','prog')}${T('t4','learn','บทเรียน','เรียนจบ '+nd+'/'+LESSONS.length,'learn')}${T('t5','quiz','แบบฝึกหัด','ทำแล้ว '+P.attempts+' ครั้ง','quiz')}${T('t6','sci','เครื่องคิดเลข','วิทยาศาสตร์ องศา/เรเดียน','sci')}</div><div class="two"><section class="card"><h2>ผลที่บันทึกล่าสุด</h2>${rec||'<p class="mut">ยังไม่มีผลที่บันทึก กด “บันทึกผล” หลังแปลงเลข</p>'}</section><section class="card"><h2>การแปลง 7 วันล่าสุด</h2>${chart()}</section></div>`}
+function convView(){const bc=k=>[2,8,10,16].map(b=>`<button class="bc" data-a="${k}" data-b="${b}">ฐาน ${b}</button>`).join('');
+ return `<section class="card"><h2>ใส่ตัวเลขที่ต้องการแปลง</h2><label class="sr-only" for="in">ตัวเลขที่ต้องการแปลง</label><input id="in" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="เช่น 39 หรือ 1011.10"><p class="mut" id="fl"></p><h3>เลือกฐานต้นทาง</h3><div class="bchips" id="cf">${bc('fb')}</div><h3>เลือกฐานปลายทาง</h3><div class="bchips" id="ct">${bc('tb')}</div><select id="fb" class="hid" tabindex="-1" aria-hidden="true">${opts(10)}</select><select id="tb" class="hid" tabindex="-1" aria-hidden="true">${opts(2)}</select><div class="resbox" id="rbx" aria-live="polite">ผลลัพธ์: <b>—</b></div><button class="btn big" data-a="conv">แปลงเลย</button><div class="row" style="margin-top:10px"><button class="btn s" data-a="swap">สลับฐาน ⇄</button><button class="btn s" data-a="clr">ล้างข้อมูล</button></div><details class="more"><summary>ตัวเลือกเพิ่มเติม และโจทย์จากหนังสือบทที่ 1</summary><div class="row" style="margin-top:10px"><div class="f"><label for="bk">โจทย์จากหนังสือบทที่ 1</label><select id="bk"><option value="">— เลือกโจทย์ —</option>${BOOK}</select></div><div class="f" style="max-width:200px"><label for="dp">ทศนิยม (ฐาน 10 → ฐานอื่น)</label><select id="dp">${[2,3,4,5,6,8].map(n=>`<option${n==4?' selected':''}>${n}</option>`).join('')}</select></div></div><div class="chips">${[['39',10,2],['10111',2,10],['1011.10',2,10],['0.573',10,2],['253',8,2],['437.65',8,16]].map(([a,f,t])=>`<button class="chip" data-a="ex" data-s="${a}" data-f="${f}" data-t="${t}">${a}${sb(f)} → ฐาน ${t}</button>`).join('')}</div><p class="mut">รองรับจุดทศนิยม (.) สูงสุด ${MAXD} หลัก ฐาน 16 ไม่แยกตัวพิมพ์เล็ก/ใหญ่</p></details></section><div id="out"></div>`}
+function learnList(){const nx=LESSONS.findIndex((_,i)=>!P.lessons[i]);return `<button class="les qz" data-go="quiz"><span class="lic">${ico('quiz')}</span><span class="lt"><b>แบบฝึกหัด 10 ข้อ สุ่มจากโจทย์ในหนังสือ</b><small>ทำแล้ว ${P.attempts} ครั้ง · คะแนนสูงสุด ${P.best===null?'ยังไม่มี':P.best+'/10'}</small></span></button><div class="sec">บทเรียนทั้งหมด</div>${LESSONS.map((l,i)=>`<button class="les${P.lessons[i]?' dn':i==nx?' cur':''}" data-a="les" data-k="${i}"><span class="lic">${ico('learn')}</span><span class="lt"><b>บทที่ ${i+1}: ${l.t}</b><small>${P.lessons[i]?'เรียนจบแล้ว':i==nx?'บทเรียนถัดไป':'ยังไม่เริ่ม'}${l.ex||l.cx?' · มีตัวอย่างวิธีทำ':''}</small></span>${P.lessons[i]?'<span class="ck" aria-label="เรียนจบ">✓</span>':''}</button>`).join('')}`}
+function progView(){const a=avg(),pc=a===null?0:a,Cc=2*Math.PI*52,nd=nDone(),hs=P.hist.slice().reverse().map(h=>`<div class="hi ${h.s>=8?'g':h.s>=5?'o':'p'}"><span class="hic">${ico('quiz')}</span><div><b>แบบฝึกหัด 10 ข้อ</b><small>${dt(h.t)} · คะแนน ${h.s}/10</small></div></div>`).join(''),sv=P.saved.map(r=>`<div class="li"><b>${E(r.s)}${sb(r.f)} → ${E(r.r)}${sb(r.t)}</b><small>${dt(r.ts)}</small></div>`).join('');
+ return `<section class="card ring"><div class="rg"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="#EDE9FE" stroke-width="10"/><circle class="rgf" cx="60" cy="60" r="52" fill="none" stroke="#7B5CFF" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(Cc*pc/100).toFixed(1)} ${Cc.toFixed(1)}" transform="rotate(-90 60 60)"/></svg><div class="rgt">${a===null?'—':a+'%'}</div></div><p style="text-align:center;margin:0">คะแนนเฉลี่ยจากแบบฝึกหัด (ล่าสุด ${P.hist.length} ครั้ง)</p></section><div class="stats3"><div><b>${streak()} วัน</b><small>สตรีค</small></div><div><b>${nd}/${LESSONS.length}</b><small>บทเรียนจบ</small></div><div><b>${P.attempts}</b><small>แบบฝึกหัด (ครั้ง)</small></div></div><section class="card"><h2>การแปลง 7 วันล่าสุด</h2>${chart()}</section><div class="sec">ประวัติแบบฝึกหัด</div>${hs||'<p class="mut">ยังไม่มีประวัติ</p>'}<div class="sec">ผลที่บันทึกไว้</div><section class="card">${sv||'<p class="mut" style="margin:0">ยังไม่มีผลที่บันทึก</p>'}</section><section class="card"><p class="box">${canStore?'ข้อมูลนี้บันทึกในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ซิงก์ข้ามอุปกรณ์ และอาจหายเมื่อล้างข้อมูลเบราว์เซอร์':'เบราว์เซอร์นี้ไม่อนุญาตให้บันทึกข้อมูล ความคืบหน้าจะอยู่ได้จนกว่าจะปิดหน้านี้'}</p><button class="btn s" data-a="reset">ล้างความคืบหน้าทั้งหมด</button></section>`}
+function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2000)}
+function copyTxt(t){const done=()=>toast('คัดลอกแล้ว'),fb=()=>{const x=document.createElement('textarea');x.value=t;x.style.cssText='position:fixed;opacity:0';document.body.appendChild(x);x.select();let k=false;try{k=document.execCommand('copy')}catch(e){}x.remove();k?done():toast('คัดลอกอัตโนมัติไม่ได้ กรุณาคัดลอกเอง')};try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}}
+const opts=(sel)=>[2,8,10,16].map(b=>`<option value="${b}"${b==sel?' selected':''}>${BN[b]}</option>`).join('');
+const steps=L=>`<ol class="steps">${L.map(l=>`<li>${E(l.replace(/^ขั้นตอนที่ \d+: /,''))}</li>`).join('')}</ol>`;
+function exHtml(s,f,t){const x=explain(s,f,t);return `<p><b>${E(s)}${sb(f)}</b> → ฐาน ${t}</p><div class="box">สูตร: ${E(x.fo)}</div>${steps(x.L)}<p class="good">ผลลัพธ์: ${E(x.res)}${sb(t)}</p>${x.nt?`<p>${E(x.nt)}</p>`:''}`}
+function calcHtml(a,b,B,op){const x=calcS(a,b,B,op);return `<p><b>${E(a)} ${op=='+'?'+':'−'} ${E(b)}</b> (ฐาน ${B})</p>${steps(x.L)}<p class="good">ผลลัพธ์: ${E(x.res)}${sb(B)}</p><p>ตรวจสอบด้วยฐาน 10: ${E(x.dec)} ${x.okv?'<span class="good">✓ ตรงกัน</span>':'✗ ไม่ตรง'}</p>`}
+const V={
+ home:()=>homeView(),
+ conv:()=>convView(),
+ learn:()=>lesson===null?learnList():lessonView(),
+ calc:()=>`<section class="card"><div class="row"><div class="f"><label for="ca">จำนวนที่ 1</label><input id="ca" autocomplete="off" autocapitalize="characters" placeholder="เช่น 1011"></div><div class="f" style="max-width:120px"><label for="op">การคำนวณ</label><select id="op"><option value="+">บวก +</option><option value="-">ลบ −</option></select></div><div class="f"><label for="cb">จำนวนที่ 2</label><input id="cb" autocomplete="off" autocapitalize="characters" placeholder="เช่น 110"></div><div class="f"><label for="cs">ฐาน</label><select id="cs">${opts(2)}</select></div></div><div class="row" style="margin-top:12px"><button class="btn" data-a="calc">คำนวณ</button><button class="btn s" data-a="calcclr">ล้างข้อมูล</button></div></section><div id="out"></div>`,
+ sci:()=>sciView(),quiz:()=>quizView(),
+ prog:()=>progView()
+};
+function lessonView(){const l=LESSONS[lesson],i=lesson;
+ const ex=(l.ex||[]).map(e=>exHtml(...e)).concat((l.cx||[]).map(c=>calcHtml(...c))).join('<hr>');
+ const tbl=l.tbl?`<h3>ตารางเปรียบเทียบจำนวนในฐาน 10, 2, 8 และ 16</h3><div style="overflow-x:auto"><table class="t"><tr><th>ฐานสิบ</th><th>ฐานสอง</th><th>ฐานแปด</th><th>ฐานสิบหก</th></tr>${[...Array(16).keys()].map(n=>`<tr><td>${n}</td><td>${str(BigInt(n),2)}</td><td>${str(BigInt(n),8)}</td><td>${str(BigInt(n),16)}</td></tr>`).join('')}</table></div>`:'';
+ const pr=l.pr?`<h3>โจทย์ให้ลองทำ (กดเพื่อดูวิธีทำในตัวแปลง)</h3><div class="chips">${l.pr.map(([a,f,t])=>`<button class="chip" data-a="try" data-s="${a}" data-f="${f}" data-t="${t}">${a}${sb(f)} → ฐาน ${t}</button>`).join('')}</div>`:'';
+ return `<section class="card"><button class="btn s" data-a="back">← รายการบทเรียน</button><h2 style="margin-top:14px">บทที่ ${i+1} ${l.t}</h2><p>${l.b}</p><h3>สูตรหรือหลักการ</h3><div class="box">${l.f}</div>${tbl}${ex?`<h3>ตัวอย่างพร้อมวิธีทำ</h3>${ex}`:''}${pr}<h3>สรุปประเด็นสำคัญ</h3><p>${l.s}</p><h3>แบบฝึกหัดท้ายบท</h3><p>${l.q}</p><div class="row"><div class="f"><label for="ans">คำตอบ</label><input id="ans" autocomplete="off"></div><button class="btn" data-a="chk">ตรวจคำตอบ</button></div><div id="fb2" role="status"></div><div class="row" style="margin-top:14px">${i>0?`<button class="btn s" data-a="les" data-k="${i-1}">← บทก่อนหน้า</button>`:''}<button class="btn s" data-a="done">${P.lessons[i]?'เรียนจบแล้ว ✓':'ทำเครื่องหมายว่าเรียนจบ'}</button>${i<LESSONS.length-1?`<button class="btn" data-a="les" data-k="${i+1}">บทถัดไป →</button>`:''}</div></section>`}
+function quizView(){
+ if(!qz)return `<section class="card"><h2>แบบฝึกหัดเลือกตอบ</h2><p>10 ข้อ ครอบคลุมการแปลงเลขฐาน การคำนวณ การแปลงระหว่างฐาน การวิเคราะห์วิธีทำ และการตรวจสอบคำตอบ ส่วนใหญ่สุ่มจากโจทย์ในหนังสือบทที่ 1</p><p>คะแนนสูงสุดของคุณ: ${P.best===null?'ยังไม่มี':P.best+'/10'}</p><button class="btn big" data-a="qstart">เริ่มทำแบบฝึกหัด</button></section>`;
+ const n=qz.qs.length;
+ if(qz.i>=n){const sc=qz.a.filter((a,i)=>a===qz.qs[i].a).length;
+  return `<section class="card"><h2>ผลคะแนน ${sc}/${n}</h2><div class="bar"><i style="width:${sc/n*100}%"></i></div><p>${sc>=8?'เยี่ยมมาก':sc>=5?'ผ่านเกณฑ์ ลองทบทวนข้อที่ผิด':'ลองทบทวนบทเรียนแล้วทำใหม่'}</p><button class="btn big" data-a="qstart">ทำใหม่</button></section>${qz.qs.map((q,i)=>`<section class="card"><b>ข้อ ${i+1}</b> ${q.q}<p class="${qz.a[i]===q.a?'good':''}">คำตอบของคุณ: ${qz.a[i]===q.a?'ถูกต้อง ✓':E(q.o[qz.a[i]])+(q.b?sb(q.b):'')+' ✗'}</p><p>เฉลย: <b>${E(q.o[q.a])}${q.b?sb(q.b):''}</b></p><p>${E(q.ex)}</p></section>`).join('')}`}
+ const q=qz.qs[qz.i],sub=qz.a[qz.i]!==undefined,pk=sub?qz.a[qz.i]:qz.pick;
+ return `<section class="card"><span class="qchip">แบบฝึกหัด · ข้อ ${qz.i+1}/${n}</span><div class="bar"><i style="width:${qz.i/n*100}%"></i></div><div class="qq">โจทย์: ${q.q}</div>${q.o.map((o,k)=>`<button class="opt${sub?(k===q.a?' ok':k===pk?' no':''):(k===pk?' sel':'')}" data-a="qsel" data-k="${k}"${sub?' disabled':''}>${'ABCD'[k]}) ${E(o)}${q.b?sb(q.b):''}</button>`).join('')}${sub?`<div class="hint">${ico('bulb')}<div><b>${pk===q.a?'ถูกต้อง':'ยังไม่ถูกต้อง'}</b> คำใบ้: ${E(q.ex)}</div></div><button class="btn big" data-a="qnext">${qz.i+1<n?'ข้อถัดไป':'ดูผลคะแนน'}</button>`:`<button class="btn big" data-a="qsubmit"${pk===undefined?' disabled':''}>ส่งคำตอบ</button>`}</section>`;
+}
+const KEYS=[['sin','sin(','f'],['cos','cos(','f'],['tan','tan(','f'],['log','log(','f'],['ln','ln(','f'],['sin⁻¹','asin(','f'],['cos⁻¹','acos(','f'],['tan⁻¹','atan(','f'],['√','√(','f'],['x²','²','f'],['xʸ','^','f'],['n!','!','f'],['π','π','f'],['e','e','f'],['Ans','Ans','f'],['(','(','o'],[')',')','o'],['%','%','o'],['÷','÷','o'],['AC','AC','ac'],['7','7',''],['8','8',''],['9','9',''],['×','×','o'],['DEL','DEL','o'],['4','4',''],['5','5',''],['6','6',''],['−','−','o'],['abs','abs(','f'],['1','1',''],['2','2',''],['3','3',''],['+','+','o'],['EXP','×10^','f'],['0','0',''],['.','.',''],['MODE','MODE','f',1],['=','=','eq',2]];
+const sciView=()=>`<section class="card"><label for="sx">นิพจน์</label><input id="sx" class="sx" autocomplete="off" inputmode="none" spellcheck="false" placeholder="เช่น sin(30)+2^3" aria-describedby="sr"><div id="sr" class="sr" role="status" aria-live="polite"></div><div class="kp">${KEYS.map(([l,k,c,sp])=>`<button class="key ${c}" data-sk="${E(k)}"${sp?` style="grid-column:span ${sp}"`:''}>${k=='MODE'?`<span id="md" title="สลับองศา/เรเดียน">${sdeg?'Deg':'Rad'}</span>`:l}</button>`).join('')}</div><p style="font-size:14px;color:var(--mut)">พิมพ์จากแป้นพิมพ์หรือกดปุ่มได้ · กดปุ่ม Deg/Rad เพื่อสลับองศากับเรเดียน (ตรีโกณมิติใช้หน่วยตามโหมดที่เลือก) · Ans คือผลลัพธ์ล่าสุด · ไม่ใช้ eval</p></section>`;
+function sEval(){const i=$('#sx'),o=$('#sr');try{const r=sciEval(i.value,sdeg);sciEval.ans=r;o.textContent='= '+fmt(r)}catch(e){o.innerHTML='<span class="bad" style="padding:4px 10px;font-size:16px">'+E(/[ก-๙]/.test(e.message)?e.message:'คำนวณไม่ได้')+'</span>'}}
+function skey(k){const i=$('#sx');if(k=='AC'){i.value='';$('#sr').textContent='';return}if(k=='DEL'){i.value=i.value.replace(/(asin\(|acos\(|atan\(|sin\(|cos\(|tan\(|log\(|abs\(|ln\(|√\(|×10\^|Ans|[\s\S])$/,'');return}if(k=='=')return sEval();if(k=='MODE'){sdeg=!sdeg;$('#md').textContent=sdeg?'Deg':'Rad';if(i.value)sEval();return}i.value+=k}
+function render(an){
+ const p=PG.find(x=>x[0]==page);$('#ttl').textContent=p[1];$('#sub').textContent=p[3];
+ const v=$('#v');v.className='view'+(an?' anim':'');v.innerHTML=V[page]();document.querySelectorAll('[data-logo]').forEach(m=>m.src=$('#logo').src);if(page=='conv')syncChips();if(pending&&page=='conv'){$('#in').value=pending[0];$('#fb').value=pending[1];$('#tb').value=pending[2];pending=null;doConv()}cuRun();
+ document.querySelectorAll('#nav button,#tab button').forEach(b=>b.setAttribute('aria-current',b.dataset.p==page?'page':'false'));
+ document.title=p[1]+' · BaseLab';if(an)window.scrollTo(0,0);
+}
+function go(p){page=p;if(p!='learn')lesson=null;if(location.hash!='#'+p)location.hash=p;else render(true)}
+function route(){const h=location.hash.slice(1);page=PG.some(x=>x[0]==h)?h:'home';if(page!='learn')lesson=null;render(true)}
+function doConv(){
+ syncChips();
+ const raw=$('#in').value.trim().toUpperCase(),f=+$('#fb').value,t=+$('#tb').value,o=$('#out'),e=err(raw,f),rb=$('#rbx');
+ if(e){o.innerHTML=`<div class="bad" role="alert">${e}</div>`;lastRes='';lastConv=null;rb.innerHTML='ผลลัพธ์: <b>—</b>';return}
+ const x=explain(raw,f,t,+$('#dp').value||4);lastRes=x.res;lastConv={s:raw,f,t,r:x.res};
+ P.conv++;P.days[tk()]=(P.days[tk()]||0)+1;P.act[tk()]=1;save();
+ rb.innerHTML=`ผลลัพธ์: <b>${E(raw)}${sb(f)} = ${E(x.res)}${sb(t)}</b>`;
+ o.innerHTML=`<section class="card"><div class="row" style="justify-content:space-between;align-items:center"><h2 style="margin:0">ขั้นตอนการคำนวณ</h2><button class="btn s" data-a="copy">คัดลอกผลลัพธ์</button></div><div class="bigline">${E(raw)}${sb(f)} → ${E(x.res)}${sb(t)}</div><div class="box">สูตร: ${E(x.fo)}</div>${steps(x.L)}<h3>ทำไมจึงคำนวณแบบนี้</h3><p>${E(x.why)}</p>${x.nt?`<p>${E(x.nt)}</p>`:''}<h3>ตรวจสอบย้อนกลับ</h3><p>${x.exact?`นำ ${E(x.res)}${sb(t)} แปลงกลับเป็นฐาน ${f} ได้ ${E(x.back)}${sb(f)} ${x.okv?'<span class="good">ตรงกับตัวเลขเดิม ✓</span>':'ไม่ตรงกับตัวเลขเดิม ✗'}`:`แปลงกลับเป็นฐาน 10 ได้ประมาณ ${E(x.back)} ${x.okv?'<span class="good">ผลตรงกับการคำนวณแบบแม่นตรง ✓</span>':'✗'}`}</p><div class="sumok"><span class="ck2" aria-hidden="true">✓</span><div><small>สรุป:</small><b>${E(raw)}${sb(f)} เท่ากับ ${E(x.res)}${sb(t)}</b></div></div><button class="btn big" data-a="save">บันทึกผล</button></section>`;
+}
+function doCalc(){
+ const a=$('#ca').value.trim().toUpperCase(),b=$('#cb').value.trim().toUpperCase(),B=+$('#cs').value,op=$('#op').value,o=$('#out');
+ const e=/\./.test(a+b)?'บวกและลบรองรับเฉพาะจำนวนเต็ม (ไม่มีจุดทศนิยม)':err(a,B)?'จำนวนที่ 1: '+err(a,B):err(b,B)?'จำนวนที่ 2: '+err(b,B):'';
+ if(e){o.innerHTML=`<div class="bad" role="alert">${e}</div>`;return}
+ o.innerHTML=`<section class="card"><h2>วิธีคำนวณ</h2>${calcHtml(a,b,B,op)}</section>`;
+}
+function chkLesson(){
+ const l=LESSONS[lesson],v=$('#ans').value.trim().toUpperCase(),okk=l.a.some(x=>x.toUpperCase()==v||(x=='ไม่'&&v=='ไม่')),o=$('#fb2');
+ if(!v){o.innerHTML='<div class="bad">กรุณากรอกคำตอบ</div>';return}
+ if(okk){o.innerHTML='<p class="good">ถูกต้อง ✓ ทำเครื่องหมายว่าเรียนจบแล้ว</p>';P.lessons[lesson]=true;P.act[tk()]=1;save()}
+ else o.innerHTML=`<div class="bad">ยังไม่ถูกต้อง ลองทบทวนวิธีทำด้านบน (เฉลย: ${E(l.a[0])})</div>`;
+}
+function qFinish(){const sc=qz.a.filter((a,i)=>a===qz.qs[i].a).length;P.attempts++;P.best=P.best===null?sc:Math.max(P.best,sc);P.hist.push({s:sc,t:Date.now()});P.hist=P.hist.slice(-10);P.act[tk()]=1;save()}
+document.addEventListener('click',e=>{
+ if(!e.target.closest('#qm,.fab'))qmToggle(false);const b=e.target.closest('button');if(!b)return;const a=b.dataset.a,d=b.dataset;if(b.id=='anim'){setAnim(document.body.classList.contains('noanim'));return}
+ if(d.p){go(d.p);return}if(d.go){qmToggle(false);go(d.go);return}if(d.sk!==undefined){skey(d.sk);return}
+ if(a=='conv')doConv();
+ else if(a=='swap'){const f=$('#fb'),t=$('#tb'),i=$('#in'),x=f.value;f.value=t.value;t.value=x;if(lastRes){i.value=lastRes}doConv()}
+ else if(a=='clr'){$('#in').value='';$('#out').innerHTML='';$('#rbx').innerHTML='ผลลัพธ์: <b>—</b>';lastRes='';lastConv=null;$('#in').focus()}
+ else if(a=='ex'){$('#in').value=d.s;$('#fb').value=d.f;$('#tb').value=d.t;doConv()}
+ else if(a=='copy'){if(lastRes)copyTxt(lastRes)}
+ else if(a=='try'){pending=[d.s,d.f,d.t];go('conv')}
+ else if(a=='fb'){$('#fb').value=d.b;syncChips()}
+ else if(a=='tb'){$('#tb').value=d.b;syncChips()}
+ else if(a=='save'){if(lastConv){P.saved.unshift({...lastConv,ts:Date.now()});P.saved=P.saved.slice(0,30);P.act[tk()]=1;save();toast('บันทึกผลแล้ว')}}
+ else if(a=='fab')qmToggle($('#qm').hidden)
+ else if(a=='calc')doCalc();
+ else if(a=='calcclr'){$('#ca').value='';$('#cb').value='';$('#out').innerHTML=''}
+ else if(a=='les'){lesson=+d.k;render(true)}
+ else if(a=='back'){lesson=null;render(true)}
+ else if(a=='chk')chkLesson();
+ else if(a=='done'){P.lessons[lesson]=true;P.act[tk()]=1;save();render(false);toast('บันทึกแล้ว')}
+ else if(a=='qstart'){qz={qs:shuf([...shuf(BANK.slice()).slice(0,7).map(mkB),...[5,6,4].map(mkQ)]),i:0,a:[]};render(false);window.scrollTo(0,0)}
+ else if(a=='qsel'){if(qz.a[qz.i]===undefined){qz.pick=+d.k;render(false)}}
+ else if(a=='qsubmit'){if(qz.pick!==undefined&&qz.a[qz.i]===undefined){qz.a[qz.i]=qz.pick;render(false)}}
+ else if(a=='qnext'){qz.i++;qz.pick=undefined;if(qz.i>=qz.qs.length)qFinish();render(false);window.scrollTo(0,0)}
+ else if(a=='reset'){if(confirm('ล้างความคืบหน้าทั้งหมด?')){P=P0();save();render(false)}}
+});
+document.addEventListener('keydown',e=>{if(e.key=='Escape')qmToggle(false);if(e.key!='Enter')return;const id=e.target.id;if(id=='in')doConv();else if(id=='ca'||id=='cb')doCalc();else if(id=='ans')chkLesson();else if(id=='sx')sEval()});
+document.addEventListener('change',e=>{if(e.target.id=='bk'&&e.target.value){const[a,f,t]=e.target.value.split('|');$('#in').value=a;$('#fb').value=f;$('#tb').value=t;doConv()}});
+$('#nav').innerHTML=PG.map(p=>`<button data-p="${p[0]}">${ico(p[0])}${p[1]}</button>`).join('');
+$('#tab').innerHTML=TB.map(([p,l])=>p=='fab'?`<button class="fab" data-a="fab" aria-label="เมนูลัด" aria-expanded="false">${ico('plus')}</button>`:`<button data-p="${p}">${ico(p)}<span>${l}</span></button>`).join('');
+$('#qm').innerHTML=[['calc','บวกและลบเลขฐาน'],['sci','เครื่องคิดเลขวิทยาศาสตร์'],['prog','ความคืบหน้า']].map(([p,t])=>`<button data-go="${p}">${ico(p)}${t}</button>`).join('');
+(()=>{const sp=$('#splash');let seen=false;try{seen=sessionStorage.getItem('bl.sp')=='1'}catch(e){}if(seen){sp.remove();return}$('#spgo').onclick=()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),450);try{sessionStorage.setItem('bl.sp','1')}catch(e){}}})();
+setAnim(!(P.noanim||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)));
+$('#fav').href=$('#logo').src;
+window.addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
