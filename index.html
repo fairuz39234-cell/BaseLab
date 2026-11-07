@@ -183,15 +183,15 @@ input,select{border:1.5px solid var(--ln);background:#F8F6FF;border-radius:14px}
 .key{border:0;background:#F3EFFF}.key.f{background:#E9E3FF}.key.o{background:#DDD6FE}.key.eq{background:#7759F7}.key.ac{background:#FEE2E2}
 .splash{position:fixed;inset:0;z-index:100;background:radial-gradient(ellipse at 12% 10%,rgba(119,89,247,.10),transparent 38%),linear-gradient(145deg,#f8f7fc 0%,#f0edf8 55%,#f8faff 100%);color:#281d43;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:0 24px calc(40px + env(safe-area-inset-bottom,0px));transition:opacity .4s,transform .4s}
 .splash.out{opacity:0;transform:scale(1.03);pointer-events:none}
-.sp-in{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:26px;width:100%;max-width:780px;text-align:left}
+.sp-in{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:14px;width:100%;max-width:620px;text-align:left}
 .sp-copy{min-width:0;text-align:left;max-width:560px}
-.logo.xl{width:112px;height:112px;border-radius:30px;border:1px solid rgba(255,255,255,.9);box-shadow:0 14px 32px rgba(40,22,79,.18);animation:pop .7s cubic-bezier(.34,1.56,.64,1) both,breathe 3s ease-in-out .8s infinite}
-.splash h1{font-size:clamp(38px,5vw,54px);margin:0;color:#281d43;letter-spacing:-.035em;line-height:1.12;animation:rise .5s .25s both}
-.splash p{max-width:42ch;margin:10px 0 0;opacity:1;color:#554d68;font-size:clamp(16px,1.8vw,20px);line-height:1.7;animation:rise .5s .35s both}
+.logo.xl{width:68px;height:68px;border-radius:16px;border:1px solid rgba(255,255,255,.9);box-shadow:0 8px 20px rgba(40,22,79,.18);animation:pop .7s cubic-bezier(.34,1.56,.64,1) both,breathe 3s ease-in-out .8s infinite}
+.splash h1{font-size:clamp(32px,4vw,40px);margin:0;color:#281d43;letter-spacing:-.035em;line-height:1.12;animation:rise .5s .25s both}
+.splash p{max-width:40ch;margin:5px 0 0;opacity:1;color:#554d68;font-size:clamp(15px,1.6vw,18px);line-height:1.45;animation:rise .5s .35s both}
 .sp-btn{width:100%;max-width:360px;border:0;border-radius:18px;background:linear-gradient(135deg,#6f4ddd,#5832ba);color:#fff;font-size:18px;font-weight:600;padding:15px;cursor:pointer;box-shadow:0 10px 24px rgba(91,33,182,.22);animation:pop .5s .6s cubic-bezier(.34,1.56,.64,1) both}
 .sp-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
 html:not([lang="en"]) #splash .sp-en,html[lang="en"] #splash .sp-th{display:none!important}
-@media(max-width:620px){.splash{padding:24px 18px calc(28px + env(safe-area-inset-bottom,0px))}.sp-in{flex-direction:column;gap:18px;text-align:center}.sp-copy{text-align:center}.logo.xl{width:96px;height:96px}.splash h1{font-size:clamp(34px,9vw,44px)}.splash p{max-width:36ch;margin-left:auto;margin-right:auto}}
+@media(max-width:440px){.splash{padding:24px 18px calc(28px + env(safe-area-inset-bottom,0px))}.sp-in{flex-direction:column;gap:14px;text-align:center}.sp-copy{text-align:center}.logo.xl{width:64px;height:64px}.splash h1{font-size:clamp(30px,8vw,36px)}.splash p{max-width:36ch;margin-left:auto;margin-right:auto}}
 @keyframes pop{from{opacity:0;transform:scale(.8)}}
 @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 @keyframes fabf{0%,100%{transform:translateY(-22px)}50%{transform:translateY(-27px)}}
@@ -1522,7 +1522,7 @@ html.theme-switch,html.theme-switch * ,html.theme-switch *::before,html.theme-sw
 </head>
 <body>
 <div id="boot" aria-hidden="true"><div class="spin"></div></div>
-<div id="splash" class="splash" role="dialog" aria-label="BaseLab introduction"><div class="sp-in"><img class="logo xl" data-logo alt="BaseLab"><div class="sp-copy"><h1>BaseLab</h1><p class="sp-th" lang="th">เรียนรู้เลขฐาน ตรรกศาสตร์ และเมทริกซ์ ผ่านบทเรียน เครื่องมือฝึกคำนวณ และแบบทดสอบ</p><p class="sp-en" lang="en">Learn number systems, logic, and matrices with lessons, practice tools, and quizzes.</p></div></div><button class="sp-btn" id="spgo"><span class="sp-th">เริ่มใช้งาน</span><span class="sp-en">Get started</span></button></div>
+<div id="splash" class="splash" role="dialog" aria-label="BaseLab introduction"><div class="sp-in"><img class="logo xl" data-logo alt="BaseLab"><div class="sp-copy"><h1>BaseLab</h1><p class="sp-th" lang="th">เรียนรู้เรื่องใหม่ เข้าใจง่าย ผ่านการลงมือทำ</p><p class="sp-en" lang="en">Explore new ideas, understand them clearly, and learn by doing.</p></div></div><button class="sp-btn" id="spgo"><span class="sp-th">เริ่มใช้งาน</span><span class="sp-en">Get started</span></button></div>
 <div class="app">
 <aside><div class="brand"><img class="logo" id="logo" alt="BaseLab logo" width="44" height="44" src="/baselab-logo.svg"><div><b>BaseLab</b><small>เรียนรู้และแปลงเลขฐาน</small></div></div><nav id="nav" aria-label="เมนูหลัก"></nav></aside>
 <main id="main"><header class="top"><img class="logo sm" data-logo alt="" data-a="home" role="button" tabindex="0" aria-label="กลับหน้าหลัก" style="cursor:pointer"><div><h1 id="ttl"></h1><p id="sub"></p></div><button id="srch" class="tg" data-a="srchop" aria-label="ค้นหา" title="ค้นหา"></button><button id="gear" class="tg" data-a="setpop" aria-label="ตั้งค่า" title="ตั้งค่า"></button></header><div id="v" class="view" aria-live="polite"></div></main>
