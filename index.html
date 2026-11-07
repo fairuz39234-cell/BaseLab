@@ -2341,7 +2341,7 @@ trObs.observe(document.body,{childList:true,subtree:true,characterData:true});
 const SB_URL='https://tzqmfcgmwwqfentmypdc.supabase.co';
 const SB_KEY='sb_publishable__dBhm2LuZQxJcpPQ69n1xw_ZCTz3wAe';
 let sbClient=null;
-function sbc(){if(!sbClient&&window.supabase&&window.supabase.createClient){try{sbClient=window.supabase.createClient(SB_URL,SB_KEY);sbClient.auth.onAuthStateChange((ev)=>{if(ev==='PASSWORD_RECOVERY'){openRecovery();return}if(ev==='SIGNED_IN'){pullRemote();loadProfile()}})}catch(e){sbClient=null}}return sbClient}
+function sbc(){if(!sbClient&&window.supabase&&window.supabase.createClient){try{sbClient=window.supabase.createClient(SB_URL,SB_KEY);sbClient.auth.onAuthStateChange((ev)=>{if(ev==='PASSWORD_RECOVERY'){openRecovery();return}if(ev==='SIGNED_IN'){setTimeout(()=>finishAuth(),0);return}if(ev==='SIGNED_OUT'){sbName='';sbAvatar='';sbEmail='';setTimeout(()=>{render(false);refreshSettings()},0)}})}catch(e){sbClient=null}}return sbClient}
 let sbName='';let sbAvatar='';let sbEmail='';
 function updAuthLabel(){const en=(P.lang||'th')=='en',b=document.querySelector('[data-a="authOpen"] > span:not(.val)');if(b)b.textContent=sbEmail?(en?'Switch account':'สลับบัญชี'):(en?'Sign in':'เข้าสู่ระบบ');const ic=document.querySelector('[data-a="authOpen"] .ri svg');if(ic)ic.innerHTML=sbEmail?I_SWITCH:I_IN}
 async function renderAcct(msg){const box=document.getElementById('acct');if(!box)return;const c=sbc();if(!c){box.innerHTML=`<p class="mut">${(P.lang||'th')=='en'?'Could not connect to accounts. Check your internet connection.':'ยังเชื่อมบัญชีไม่ได้ กรุณาตรวจการเชื่อมต่ออินเทอร์เน็ต'}</p>`;return}
