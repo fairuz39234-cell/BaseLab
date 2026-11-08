@@ -1743,6 +1743,8 @@ html:has(#toolm:not([hidden])),html:has(#toolm:not([hidden])) body{overflow:hidd
 @keyframes splashFlow{0%{background-position:50% 100%}100%{background-position:50% 0%}}.splash{background:linear-gradient(0deg,#0c0014 0%,#1d0033 35%,#34065c 70%,#4c1a8f 100%)!important;background-size:100% 300%!important;animation:splashFlow 9s ease-in-out infinite alternate}@media (prefers-reduced-motion:reduce){.splash{animation:none}}
 .splash .logo.xl{width:min(56vw,380px)!important;max-height:32vh!important;height:auto!important}
 .splash .sp-btn{background:rgba(255,255,255,.14)!important;color:#fefefe!important;border:1px solid rgba(255,255,255,.35)!important;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.45)!important}.splash .sp-btn:hover{background:rgba(255,255,255,.22)!important;filter:none}
+.app-ver{text-align:center;font-size:12px;color:#8E8E93;margin:18px 0 6px;letter-spacing:.2px}
+@keyframes acctUp{from{transform:translateY(100%)}to{transform:none}}#acctm{place-items:end center;padding:0;background:rgba(0,0,0,.45)}#acctm .setbox{width:100%!important;max-width:520px!important;max-height:80vh!important;border-radius:24px 24px 0 0!important;border:none!important;padding:16px 20px calc(28px + env(safe-area-inset-bottom,0px))!important;background:#fff!important;color:#111!important;animation:acctUp .28s cubic-bezier(.2,.75,.25,1) both}[data-theme=dark] #acctm .setbox{background:#1C1C1E!important;color:#fff!important}#acctm .sethd{position:relative;justify-content:center;padding:4px 0 12px}#acctm .sethd h2{font-size:18px;text-align:center}.acct-x{position:absolute;right:0;top:0;width:40px;height:40px;border:0;background:transparent;color:inherit;font-size:20px;cursor:pointer;border-radius:50%}.acct-row{display:flex;align-items:center;gap:16px;width:100%;padding:12px 0;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}.acct-av{position:relative;width:56px;height:56px;border-radius:50%;overflow:hidden;flex:none;background:#7759F7;color:#fff;display:grid;place-items:center;font-weight:700;font-size:22px}.acct-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.acct-av.add{background:#F2F2F7;color:#555}[data-theme=dark] .acct-av.add{background:#2C2C2E;color:#ddd}.acct-txt{flex:1;min-width:0}.acct-txt b{display:block;font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.acct-txt small{display:block;color:#8E8E93;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.acct-ok{color:#7759F7;flex:none}.acct-row.busy{opacity:.55;pointer-events:none}
 
 .pcard{display:flex;gap:14px;align-items:center;background:#fff;border-radius:14px;padding:16px;margin-top:4px}
 
@@ -3020,6 +3022,8 @@ html.theme-switch,html.theme-switch * ,html.theme-switch *::before,html.theme-sw
 
 <div id="logoutm" class="setm" hidden><div class="setbox" role="dialog" aria-modal="true" aria-labelledby="logoutPrompt"><div class="sethd"><h2 id="logoutPrompt">คุณต้องการออกจากระบบหรือไม่?</h2></div><div class="setbody"><button class="srow" data-a="logoutSwitch"><span>สลับบัญชี</span></button><button class="srow" data-a="logoutConfirm" style="color:#d96a6a"><span>ออกจากระบบ</span></button><button class="srow" data-a="logoutCancel"><span>ยกเลิก</span></button></div></div></div>
 
+<div id="acctm" class="setm" hidden><div class="setbox" role="dialog" aria-modal="true" aria-labelledby="acctTitle"><div class="sethd"><h2 id="acctTitle">สลับบัญชี</h2><button class="acct-x" data-a="acctClose" aria-label="ปิด">✕</button></div><div id="acctList" class="setbody"></div></div></div>
+
 <div id="authm" class="setm" hidden><div class="setbox" role="dialog" aria-modal="true" aria-labelledby="authTitle"><div class="sethd"><h2 id="authTitle">เข้าสู่ระบบ BaseLab</h2><button class="btn s" data-a="authClose" aria-label="ปิด">✕</button></div><div class="setbody"><label class="pw-label" for="authEmailInput">อีเมล</label><input class="pw-input" id="authEmailInput" type="email" autocomplete="email" placeholder="อีเมล"><p id="authEmailErr" class="auth-fErr" role="alert" style="color:#e53935;font-size:13px;font-weight:600;margin:6px 2px 0;min-height:0"></p><label class="pw-label" for="authPasswordInput">รหัสผ่าน</label><div class="auth-pw-wrap"><input class="pw-input" id="authPasswordInput" type="password" autocomplete="current-password" minlength="8" placeholder="รหัสผ่าน" style="padding-right:64px!important"><button type="button" class="auth-eye" data-a="authTogglePw" aria-label="แสดงรหัสผ่าน" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></div><p id="authPassErr" class="auth-fErr" role="alert" style="color:#e53935;font-size:13px;font-weight:600;margin:6px 2px 0;min-height:0"></p><button id="authSubmit" class="btn pw-save" data-a="authSubmit">เข้าสู่ระบบ</button><button id="authGoogle" class="btn s" data-a="authGoogle" style="margin-top:12px;width:100%;min-height:48px;background:#fff;color:#222;border:1px solid #dadce0;display:flex;align-items:center;justify-content:center;gap:10px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.01 13.24l7.98 6.19C11.9 13.72 17.48 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.72 7.18l7.63 5.92c4.46-4.13 7.13-10.2 7.13-17.57z"/><path fill="#FBBC05" d="M9.99 28.57a14.4 14.4 0 0 1 0-9.14l-7.98-6.19a24 24 0 0 0 0 21.52l7.98-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.88l-7.63-5.92c-2.12 1.42-4.85 2.26-8.27 2.26-6.52 0-12.1-4.22-14.01-9.93l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>เข้าสู่ระบบด้วย Google</span></button><button id="authFacebook" class="btn s" data-a="authFacebook" style="margin-top:12px;width:100%;min-height:48px;background:#1877F2;color:#fff;border:1px solid #1877F2;display:flex;align-items:center;justify-content:center;gap:10px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span>เข้าสู่ระบบด้วย Facebook</span></button><button id="authForgot" class="btn s" data-a="authForgot" hidden style="margin-top:8px;width:100%">ลืมรหัสผ่าน?</button><button id="authResend" class="btn s" data-a="authResend" hidden style="margin-top:8px;width:100%">ส่งลิงก์ยืนยันอีกครั้ง</button><p id="authMessage" class="mut pw-message" role="status"></p><p class="mut" style="text-align:center;margin-top:12px"><span id="authFooterLead">ยังไม่มีบัญชี?</span> <button class="btn s" id="authModeToggle" data-a="authToggle">สมัครสมาชิก</button></p><p class="mut" style="text-align:center;margin-top:10px;font-size:13px"><a href="/privacy.html" target="_blank" rel="noopener">นโยบายความเป็นส่วนตัว</a> · <a href="/terms.html" target="_blank" rel="noopener">ข้อกำหนดการให้บริการ</a></p></div></div></div>
 
 <div id="toolm" class="setm tl" hidden><div class="setbox" role="dialog" aria-modal="true" aria-labelledby="toolT"><div class="sethd"><h2 id="toolT">เครื่องมือ</h2><button class="btn s" data-a="dx" data-k="toolm">← กลับ</button></div><div id="toolbody"></div></div></div>
@@ -3537,7 +3541,7 @@ if(setSub=='lang') return `${BACK(en?'Language':'ภาษา')}<h4 class="sect"
 
 <button class="srow" data-a="authOpen">${ICR(sbEmail?I_SWITCH:I_IN)}<span>${sbEmail?(en?'Switch account':'สลับบัญชี'):(en?'Sign in':'เข้าสู่ระบบ')}</span><span class="val"><span class="chev">›</span></span></button>
 
- <button class="srow" data-a="logoutAsk">${ICR(I_OUT)}<span>${en?'Log out':'ออกจากระบบ'}</span></button></div>`};
+ <button class="srow" data-a="logoutAsk">${ICR(I_OUT)}<span>${en?'Log out':'ออกจากระบบ'}</span></button></div><p class="app-ver">BaseLab v1.0.0</p>`};
 
 function syncSet(){document.querySelectorAll('.seg button').forEach(b=>{const on=segOn(b.dataset.a,b.dataset.k);b.classList.toggle('on',on);b.setAttribute('aria-checked',String(on))})}
 
@@ -4197,11 +4201,29 @@ async function authGoogleLogin(){const en=(P.lang||'th')=='en';authClearErr();if
 
 async function authFacebookLogin(){const en=(P.lang||'th')=='en';authClearErr();if(location.protocol==='file:'){authErr(en?'Open BaseLab from its website or a localhost address to use Facebook sign-in.':'กรุณาเปิด BaseLab ผ่านเว็บไซต์หรือ localhost ก่อนเข้าสู่ระบบด้วย Facebook');return}const c=sbc();if(!c){authErr(en?'Account service is unavailable.':'บริการบัญชีไม่พร้อมใช้งาน');return}const b=$('#authFacebook'),label=b.querySelector('span').textContent;b.disabled=true;b.querySelector('span').textContent=en?'Connecting to Facebook…':'กำลังเชื่อมต่อ Facebook…';try{const r=await c.auth.signInWithOAuth({provider:'facebook',options:{redirectTo:location.origin+'/',scopes:'email'}});if(r&&r.error)authErr(r.error.message)}catch(e){authErr(en?'Could not connect to Facebook. Try again.':'เชื่อมต่อ Facebook ไม่สำเร็จ กรุณาลองอีกครั้ง')}finally{b.disabled=false;b.querySelector('span').textContent=label}}
 
-async function endAccountSession(){const c=sbc();if(c){try{const r=await c.auth.signOut({scope:'local'});if(r&&r.error)throw r.error}catch(e){toast((P.lang||'th')=='en'?'Could not sign out. Check your connection.':'ออกจากระบบไม่สำเร็จ กรุณาตรวจการเชื่อมต่อ');return false}}sbName='';sbAvatar='';sbEmail='';return true}
+async function endAccountSession(){const c=sbc();if(c){try{const cu0=await currentUser();const r=await c.auth.signOut({scope:'local'});if(r&&r.error)throw r.error;if(cu0)acctRemove(cu0.id)}catch(e){toast((P.lang||'th')=='en'?'Could not sign out. Check your connection.':'ออกจากระบบไม่สำเร็จ กรุณาตรวจการเชื่อมต่อ');return false}}sbName='';sbAvatar='';sbEmail='';return true}
 
-async function switchToAuth(){dlg('logoutm',0);if(!await endAccountSession())return;setPop(false);openAuth('signup')}
+function acctGet(){try{const a=JSON.parse(localStorage.getItem('bl.accts')||'[]');return Array.isArray(a)?a.filter(x=>x&&x.id&&x.rt):[]}catch(e){return[]}}
 
-async function finishAuth(){if(/(?:access_token|refresh_token)=/i.test(location.hash))history.replaceState(history.state,'',location.pathname+location.search);$('#authm').hidden=true;$('#authMessage').textContent='';await loadProfile();await pullRemote();render(false);refreshSettings()}
+function acctPut(a){try{localStorage.setItem('bl.accts',JSON.stringify(a))}catch(e){}}
+
+function acctSave(s){if(!s||!s.user||!s.refresh_token)return;const u=s.user,m=u.user_metadata||{},L=acctGet(),e={id:u.id,email:u.email||'',name:m.display_name||(u.email||'').split('@')[0],avatar:m.avatar_url||'',at:s.access_token,rt:s.refresh_token},i=L.findIndex(x=>x.id==e.id);if(i>=0)L[i]=e;else L.push(e);acctPut(L)}
+
+function acctRemove(id){acctPut(acctGet().filter(x=>x.id!=id))}
+
+let acctCur='';
+
+function acctPaint(){const en=(P.lang||'th')=='en';$('#acctTitle').textContent=en?'Switch account':'สลับบัญชี';$('#acctList').innerHTML=acctGet().map(a=>`<button class="acct-row" data-a="acctPick" data-id="${E(a.id)}"><span class="acct-av">${E((a.name||a.email||'?').trim().charAt(0).toUpperCase())}${a.avatar?`<img src="${E(a.avatar)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:''}</span><span class="acct-txt"><b>${E(a.name||a.email)}</b><small>${E(a.email)}</small></span>${a.id==acctCur?'<svg class="acct-ok" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>':''}</button>`).join('')+`<button class="acct-row" data-a="acctAdd"><span class="acct-av add"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="acct-txt"><b>${en?'Add account':'เพิ่มบัญชี'}</b></span></button>`}
+
+async function openAcctSheet(){const c=sbc();if(c){try{const r=await c.auth.getSession(),s=r&&r.data&&r.data.session;if(s){acctSave(s);acctCur=s.user.id}}catch(e){}}acctPaint();dlg('logoutm',0);dlg('acctm',1)}
+
+async function switchAccount(id,btn){const en=(P.lang||'th')=='en',c=sbc();if(!c)return;if(id===acctCur){dlg('acctm',0);return}const a=acctGet().find(x=>x.id==id);if(!a)return;if(btn)btn.classList.add('busy');try{await pushRemote()}catch(e){}let net=false;try{const t=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});const r1=await t.auth.setSession({access_token:a.at,refresh_token:a.rt});if(r1.error)throw r1.error;const s=r1.data&&r1.data.session;if(!s)throw new Error('no session');acctSave(s);const r2=await c.auth.setSession({access_token:s.access_token,refresh_token:s.refresh_token});if(r2.error)throw r2.error;acctCur=id;dlg('acctm',0);return}catch(e){net=!!(e&&(e.name=='AuthRetryableFetchError'||e.name=='TypeError'));if(!net)acctRemove(id);toast(net?(en?'Could not connect. Try again.':'เชื่อมต่อไม่สำเร็จ กรุณาลองอีกครั้ง'):(en?'This account has expired. Please sign in again.':'บัญชีนี้หมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง'));acctPaint()}}
+
+async function switchToAuth(){dlg('logoutm',0);if(sbEmail){await openAcctSheet();return}setPop(false);openAuth('signup')}
+
+async function guardAccountData(){clearTimeout(syncT);if(!canStore)return;const u=await currentUser();if(!u)return;try{const prev=localStorage.getItem('bl.uid');if(prev&&prev!==u.id){const keep={theme:P.theme,lang:P.lang,hap:P.hap,noanim:P.noanim};P=Object.assign(P0(),{quiz20:true},keep);localStorage.setItem('bl.v1',JSON.stringify(P))}localStorage.setItem('bl.uid',u.id)}catch(e){}}
+
+async function finishAuth(){await guardAccountData();if(/(?:access_token|refresh_token)=/i.test(location.hash))history.replaceState(history.state,'',location.pathname+location.search);$('#authm').hidden=true;$('#authMessage').textContent='';await loadProfile();await pullRemote();render(false);refreshSettings()}
 
 let lastSignupEmail='';
 
@@ -4254,6 +4276,12 @@ function lAct2(a,d){
  if(a=='logoutSwitch'){dlg('logoutm',0);switchToAuth();return 1}
 
  if(a=='authOpen'||a=='sbswitch'){switchToAuth();return 1}
+
+ if(a=='acctClose'){dlg('acctm',0);return 1}
+
+ if(a=='acctPick'){switchAccount(d.id,b);return 1}
+
+ if(a=='acctAdd'){dlg('acctm',0);setPop(false);openAuth('login');return 1}
 
  if(a=='pwpick'){pwBase=+d.n;paintTool();return 1}
 
@@ -4675,7 +4703,7 @@ const SB_KEY='sb_publishable__dBhm2LuZQxJcpPQ69n1xw_ZCTz3wAe';
 
 let sbClient=null;
 
-function sbc(){if(!sbClient&&window.supabase&&window.supabase.createClient){try{sbClient=window.supabase.createClient(SB_URL,SB_KEY);sbClient.auth.onAuthStateChange((ev)=>{if(ev==='PASSWORD_RECOVERY'){openRecovery();return}if(ev==='SIGNED_IN'){setTimeout(()=>finishAuth(),0);return}if(ev==='SIGNED_OUT'){sbName='';sbAvatar='';sbEmail='';setTimeout(()=>{render(false);refreshSettings()},0)}})}catch(e){sbClient=null}}return sbClient}
+function sbc(){if(!sbClient&&window.supabase&&window.supabase.createClient){try{sbClient=window.supabase.createClient(SB_URL,SB_KEY);sbClient.auth.onAuthStateChange((ev,ses)=>{if(ses&&(ev==='SIGNED_IN'||ev==='TOKEN_REFRESHED'||ev==='USER_UPDATED'||ev==='INITIAL_SESSION'))acctSave(ses);if(ev==='PASSWORD_RECOVERY'){openRecovery();return}if(ev==='SIGNED_IN'){setTimeout(()=>finishAuth(),0);return}if(ev==='SIGNED_OUT'){sbName='';sbAvatar='';sbEmail='';setTimeout(()=>{render(false);refreshSettings()},0)}})}catch(e){sbClient=null}}return sbClient}
 
 let sbName='';let sbAvatar='';let sbEmail='';
 
