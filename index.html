@@ -3636,7 +3636,7 @@ const setBody=()=>{const th=P.theme||'system';const en=(P.lang||'th')=='en';cons
 if(setSub=='guide') return `${BACK(en?'Services':'บริการ')}<section class="card service-page"><header class="service-page-head"><span class="service-eyebrow">${en?'HELP CENTER':'ศูนย์ช่วยเหลือ'}</span><h2>${en?'User guide':'คู่มือการใช้งาน'}</h2><p>${en?'A short guide to getting started with BaseLab.':'คำแนะนำสำหรับการเริ่มต้นและใช้งาน BaseLab'}</p></header><div class="service-steps"><article class="service-step"><span class="service-step-num">01</span><div><h3>${en?'Choose a section':'เลือกเมนูที่ต้องการ'}</h3><p>${en?'Choose a tool or lesson from the home screen.':'เลือกเครื่องมือหรือบทเรียนจากหน้าแรกเพื่อเริ่มใช้งาน'}</p></div></article><article class="service-step"><span class="service-step-num">02</span><div><h3>${en?'Use the calculators':'ใช้เครื่องมือคำนวณ'}</h3><p>${en?'Enter the values, choose the bases, and calculate to see the result and working.':'ใส่ข้อมูล เลือกฐานที่ต้องการ แล้วกดคำนวณเพื่อดูผลลัพธ์และวิธีทำ'}</p></div></article><article class="service-step"><span class="service-step-num">03</span><div><h3>${en?'Study and review':'เรียนและทบทวน'}</h3><p>${en?'Study the lessons, then use quizzes to review your understanding.':'ศึกษาเนื้อหา แล้วทำแบบทดสอบเพื่อทบทวนความเข้าใจ'}</p></div></article><article class="service-step"><span class="service-step-num">04</span><div><h3>${en?'Customize the app':'ปรับการตั้งค่า'}</h3><p>${en?'Open Settings to change the language, appearance, or account.':'เปิดการตั้งค่าเพื่อเปลี่ยนภาษา รูปแบบหน้าจอ หรือจัดการบัญชี'}</p></div></article></div></section>`;
 if(setSub=='feedback') return `${BACK(en?'Services':'บริการ')}<section class="card service-page"><header class="service-page-head"><span class="service-eyebrow">${en?'CONTACT':'ติดต่อผู้พัฒนา'}</span><h2>${en?'Feedback':'ข้อเสนอแนะ'}</h2><p>${en?'Send a message to report a problem or suggest an improvement.':'ส่งข้อความเพื่อแจ้งปัญหาหรือเสนอแนวทางพัฒนา BaseLab'}</p></header><div class="service-contacts"><a class="service-contact" href="https://www.instagram.com/fairuxs/" target="_blank" rel="noopener"><span class="service-contact-icon">${ICR(I_IG)}</span><span class="service-contact-copy"><b>Instagram</b><small>@fairuxs</small></span><span class="service-arrow" aria-hidden="true">↗</span></a><a class="service-contact" href="https://www.facebook.com/share/1MV3uHiT43/?mibextid=wwXIfr" target="_blank" rel="noopener"><span class="service-contact-icon">${ICR(I_FB)}</span><span class="service-contact-copy"><b>Facebook</b><small>Fairuz Samae</small></span><span class="service-arrow" aria-hidden="true">↗</span></a></div></section>`;
 if(setSub=='review'){rvEnsure();const mine=rvMine(),r=rvDraft.touched?rvDraft.r:(mine?mine.rating:0),t=rvDraft.touched?rvDraft.t:(mine?mine.comment||'':'');
- const form=sbEmail?`<div class="rv-pick" role="radiogroup" aria-label="${en?'Rating':'ให้คะแนน'}">${[1,2,3,4,5].map(i=>`<button type="button" class="rv-s${i<=r?' on':''}" data-a="rvstar" data-k="${i}" role="radio" aria-checked="${i==r}" aria-label="${i}">★</button>`).join('')}</div><label class="pw-label" for="rvtxt">${en?'Your review (optional)':'ข้อความรีวิว (ไม่บังคับ)'}</label><textarea class="pw-input rv-text" id="rvtxt" maxlength="500" rows="4" placeholder="${en?'Tell us what you think of BaseLab':'บอกความคิดเห็นของคุณเกี่ยวกับ BaseLab'}">${E(t)}</textarea><small class="mut" id="rvcnt">${t.length}/500</small><button class="btn pw-save" data-a="rvsave">${mine?(en?'Update review':'อัปเดตรีวิว'):(en?'Submit review':'ส่งรีวิว')}</button>${mine?`<button class="btn s" data-a="rvdel">${en?'Delete my review':'ลบรีวิวของฉัน'}</button>`:''}<p id="rvmsg" class="mut pw-message" role="status"></p>`:`<p class="mut pw-help">${en?'Please sign in to write a review.':'ต้องเข้าสู่ระบบก่อนจึงจะรีวิวได้'}</p><button class="btn pw-save" data-a="authOpen">${en?'Sign in':'เข้าสู่ระบบ'}</button>`;
+ const form=sbEmail?`<div class="rv-pick" role="radiogroup" aria-label="${en?'Rating':'ให้คะแนน'}">${[1,2,3,4,5].map(i=>`<button type="button" class="rv-s${i<=r?' on':''}" data-a="rvstar" data-k="${i}" role="radio" aria-checked="${i==r}" aria-label="${i}">★</button>`).join('')}</div><label class="pw-label" for="rvtxt">${en?'Your review (optional)':'ข้อความรีวิว (ไม่บังคับ)'}</label><textarea class="pw-input rv-text" id="rvtxt" maxlength="500" rows="4" placeholder="${en?'Tell us what you think of BaseLab':'บอกความคิดเห็นของคุณเกี่ยวกับ BaseLab'}">${E(t)}</textarea><small class="mut rv-count" id="rvcnt">${t.length}/500</small><div class="rv-actions"><button class="btn pw-save" data-a="rvsave">${mine?(en?'Update review':'อัปเดตรีวิว'):(en?'Submit review':'ส่งรีวิว')}</button></div><p id="rvmsg" class="mut pw-message rv-msg" role="status"></p>`:`<p class="mut pw-help">${en?'Please sign in to write a review.':'ต้องเข้าสู่ระบบก่อนจึงจะรีวิวได้'}</p><button class="btn pw-save" data-a="authOpen">${en?'Sign in':'เข้าสู่ระบบ'}</button>`;
  return `${BACK(en?'Services':'บริการ')}<section class="card pw-card rv-form"><h3 class="pw-title">${en?'Review BaseLab':'รีวิวเว็บไซต์ BaseLab'}</h3><p class="mut pw-help">${en?'Give a rating and share your experience. Your review appears with your display name. One review per account.':'ให้ดาวและเล่าประสบการณ์ของคุณ รีวิวจะแสดงพร้อมชื่อที่แสดงของบัญชี หนึ่งบัญชีรีวิวได้หนึ่งครั้ง'}</p>${form}</section>`}
 if(setSub=='lang') return `${BACK(en?'Language':'ภาษา')}<h4 class="sect">${en?'App language':'ภาษาแอป'}</h4><div class="grp"><button class="srow" data-a="lang" data-k="th"><span>ไทย</span>${RAD(!en)}</button><button class="srow" data-a="lang" data-k="en"><span>English</span>${RAD(en)}</button></div>`;
 
@@ -4323,7 +4323,7 @@ const toolTabs=k=>{lastTool=k;return `<div class="seg" role="radiogroup" aria-la
 
 let lcat=null,toolOpen=null;
 
-const MENU=[['learn','บทเรียน'],['quiz','แบบทดสอบ'],['conv','แปลงเลขฐาน'],['calc','บวก-ลบ เลขฐาน'],['tt','ตาราง ค่าความจริง'],['sci','เครื่องคิดเลข'],['mt','ตารางสูตรคูณ'],['pw','ตารางยกกำลัง'],['matrix','Matrix Calculator']];
+const MENU=[['learn','บทเรียน'],['quiz','แบบทดสอบ'],['conv','แปลงเลขฐาน'],['calc','บวก-ลบ เลขฐาน'],['sci','เครื่องคิดเลข'],['matrix','Matrix Calculator'],['tt','ตาราง ค่าความจริง'],['mt','ตารางสูตรคูณ'],['pw','ตารางยกกำลัง']];
 
 const LOCKED=[];
 
@@ -4981,18 +4981,19 @@ function rvHTML(){
  const avg=rvRows.reduce((t,r)=>t+r.rating,0)/n;
  const dist=[5,4,3,2,1].map(k=>{const c=rvRows.filter(r=>r.rating===k).length;return `<div class="rv-bar"><span>${k}★</span><i><b style="width:${Math.round(c/n*100)}%"></b></i><small>${c}</small></div>`}).join('');
  const withText=rvRows.filter(r=>r.comment&&String(r.comment).trim());
- const list=withText.slice(0,10).map(r=>`<article class="rv-item"><div class="rv-top"><b>${E(r.display_name||(en?'Learner':'ผู้ใช้ BaseLab'))}</b>${rvStarsHtml(r.rating,'sm')}</div><p>${E(r.comment)}</p><small class="mut">${rvDate(r.updated_at||r.created_at)}</small></article>`).join('');
+ const shown=rvRows.filter(r=>(r.comment&&String(r.comment).trim())||(rvUid&&r.user_id===rvUid));const list=shown.slice(0,10).map(r=>{const mine=!!rvUid&&r.user_id===rvUid;return `<article class="rv-item${mine?' rv-mine':''}"><div class="rv-top"><b>${E(r.display_name||(en?'Learner':'ผู้ใช้ BaseLab'))}</b>${rvStarsHtml(r.rating,'sm')}</div>${r.comment&&String(r.comment).trim()?`<p>${E(r.comment)}</p>`:''}<small class="mut">${rvDate(r.updated_at||r.created_at)}</small>${mine?`<small class="rv-hint">${en?'Press and hold to delete your review':'กดค้างที่รีวิวนี้เพื่อลบ'}</small>`:''}</article>`}).join('');
  const more=withText.length>10?`<p class="mut">${en?`Showing the latest 10 of ${withText.length} written reviews`:`แสดง 10 รีวิวล่าสุดจากทั้งหมด ${withText.length} รีวิวที่มีข้อความ`}</p>`:'';
  return head+`<div class="rv-sum"><div class="rv-avg"><strong>${avg.toFixed(1)}</strong>${rvStarsHtml(avg)}<small class="mut">${en?`${n} review${n>1?'s':''}`:`${n} รีวิว`}</small></div><div class="rv-dist">${dist}</div></div>${list}${more}${cta}`;
 }
 function rvPaint(){const b=document.getElementById('rvBox');if(b)b.innerHTML=rvHTML();const m=document.getElementById('setm');if(m&&!m.hidden&&setSub=='review')refreshSettings()}
-function rvEnsure(){if(rvRows===null&&!rvLoading&&!rvErr)setTimeout(()=>rvLoad(),0)}
+const rvTO=(p,ms=12000)=>Promise.race([Promise.resolve(p),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))]);
+function rvEnsure(){if(rvRows===null&&!rvLoading)setTimeout(()=>{rvErr='';rvTries=0;rvLoad()},0)}
 async function rvLoad(){
  if(rvLoading)return;rvLoading=true;const en=(P.lang||'th')=='en',c=sbc();
  if(!c){rvLoading=false;rvTries=(rvTries||0)+1;if(rvTries<=20){setTimeout(()=>rvLoad(),500);return}rvErr=en?'Reviews are unavailable right now.':'ยังโหลดรีวิวไม่ได้ในขณะนี้';rvPaint();return}rvTries=0;
  try{
   const u=await currentUser();rvUid=u?u.id:'';
-  const r=await c.from('site_reviews').select('user_id,display_name,rating,comment,created_at,updated_at').order('updated_at',{ascending:false}).limit(500);
+  const r=await rvTO(c.from('site_reviews').select('user_id,display_name,rating,comment,created_at,updated_at').order('updated_at',{ascending:false}).limit(500));
   if(r.error)throw r.error;rvRows=Array.isArray(r.data)?r.data:[];rvErr='';
  }catch(e){try{console.warn('reviews',e)}catch(_){}rvRows=null;rvErr=en?'Reviews are unavailable right now.':'ยังโหลดรีวิวไม่ได้ในขณะนี้'}
  rvLoading=false;rvPaint();
@@ -5003,7 +5004,7 @@ function rvStar(n){
  document.querySelectorAll('.rv-s').forEach((b,i)=>{b.classList.toggle('on',i<n);b.setAttribute('aria-checked',String(i+1===n))});
 }
 function rvSay(t,ok){const m=document.getElementById('rvmsg');if(m){m.textContent=t;m.className='mut pw-message'+(ok?' ok':'')}}
-function rvFail(e,en){const msg=(e&&e.message)||'';if((e&&(e.code=='42P01'||e.code=='PGRST205'))||/site_reviews/.test(msg)&&/(schema cache|does not exist)/i.test(msg))return en?'The review system is not set up yet.':'ระบบรีวิวยังไม่พร้อมใช้งาน';return en?'Could not save. Please try again.':'บันทึกไม่สำเร็จ กรุณาลองใหม่'}
+function rvFail(e,en){const msg=(e&&e.message)||'';if(msg==='timeout')return en?'Connection timed out. Please try again.':'การเชื่อมต่อนานเกินไป กรุณาลองใหม่';if((e&&(e.code=='42P01'||e.code=='PGRST205'))||/site_reviews/.test(msg)&&/(schema cache|does not exist)/i.test(msg))return en?'The review system is not set up yet.':'ระบบรีวิวยังไม่พร้อมใช้งาน';return en?'Could not save. Please try again.':'บันทึกไม่สำเร็จ กรุณาลองใหม่'}
 async function rvSave(){
  const en=(P.lang||'th')=='en',c=sbc();
  if(!c){rvSay(en?'Could not connect. Please try again.':'เชื่อมต่อไม่ได้ กรุณาลองใหม่');return}
@@ -5014,7 +5015,7 @@ async function rvSave(){
  const nm=String((u.user_metadata&&u.user_metadata.display_name)||'').trim().slice(0,30)||(en?'Learner':'ผู้ใช้ BaseLab');
  rvSay(en?'Saving…':'กำลังบันทึก…');
  try{
-  const res=await c.from('site_reviews').upsert({user_id:u.id,display_name:nm,rating:r,comment:txt,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+  const res=await rvTO(c.from('site_reviews').upsert({user_id:u.id,display_name:nm,rating:r,comment:txt,updated_at:new Date().toISOString()},{onConflict:'user_id'}));
   if(res&&res.error)throw res.error;
  }catch(e){try{console.warn('review save',e)}catch(_){}rvSay(rvFail(e,en));return}
  rvDraft={r:0,t:'',touched:false};await rvLoad();rvSay(en?'Review saved. Thank you!':'บันทึกรีวิวแล้ว ขอบคุณครับ',true);
@@ -5022,9 +5023,10 @@ async function rvSave(){
 async function rvDel(){
  const en=(P.lang||'th')=='en',c=sbc();if(!c)return;const u=await currentUser();if(!u)return;
  if(typeof confirm=='function'&&!confirm(en?'Delete your review?':'ต้องการลบรีวิวของคุณหรือไม่?'))return;
- try{const res=await c.from('site_reviews').delete().eq('user_id',u.id);if(res&&res.error)throw res.error}catch(e){rvSay(rvFail(e,en));return}
- rvDraft={r:0,t:'',touched:false};await rvLoad();rvSay(en?'Review deleted.':'ลบรีวิวแล้ว',true);
+ try{const res=await rvTO(c.from('site_reviews').delete().eq('user_id',u.id));if(res&&res.error)throw res.error}catch(e){toast(rvFail(e,en),false);return}
+ rvDraft={r:0,t:'',touched:false};await rvLoad();toast(en?'Review deleted.':'ลบรีวิวแล้ว');
 }
+let rvPress=null;const rvCancel=()=>{if(rvPress){clearTimeout(rvPress.t);rvPress=null}};document.addEventListener('pointerdown',e=>{const it=e.target&&e.target.closest?e.target.closest('.rv-item.rv-mine'):null;if(!it)return;rvCancel();rvPress={t:setTimeout(()=>{rvPress=null;rvDel()},700)}});['pointerup','pointerleave','pointercancel','pointermove'].forEach(ev=>document.addEventListener(ev,rvCancel,true));
 document.addEventListener('click',e=>{const b=e.target&&e.target.closest?e.target.closest('[data-a="rvopen"],[data-a="rvstar"],[data-a="rvsave"],[data-a="rvdel"]'):null;if(!b)return;const a=b.dataset.a;if(a=='rvopen')rvOpen();else if(a=='rvstar')rvStar(+b.dataset.k);else if(a=='rvsave')rvSave();else if(a=='rvdel')rvDel()});
 document.addEventListener('input',e=>{const t=e.target;if(t&&t.id=='rvtxt'){rvDraft.t=t.value;rvDraft.touched=true;const c=document.getElementById('rvcnt');if(c)c.textContent=t.value.length+'/500'}});
 async function loadLeaderboards(){const el=document.getElementById('leaderboards');if(!el)return;const en=(P.lang||'th')=='en',c=sbc();if(!c){el.innerHTML=`<p class="mut">${en?'Rankings are unavailable right now.':'ยังโหลดอันดับไม่ได้ในขณะนี้'}</p>`;return}const u=await currentUser();if(!u){el.innerHTML=`<p class="mut">${en?'Sign in to view class rankings.':'เข้าสู่ระบบเพื่อดูอันดับผู้เรียน'}</p>`;return}el.innerHTML=`<p class="mut">${en?'Loading rankings…':'กำลังโหลดอันดับ…'}</p>`;try{let r=await c.rpc('baselab_leaderboard_v2');if(r.error)r=await c.rpc('baselab_leaderboard');if(r.error)throw r.error;lbRows=Array.isArray(r.data)?r.data:[];if(!lbRows.length){el.innerHTML=`<p class="mut">${en?'No registered learners yet.':'ยังไม่มีผู้สมัครสมาชิก'}</p>`;return}lbRender()}catch(e){el.innerHTML=`<p class="mut">${en?'Rankings are not set up on the server yet.':'ระบบจัดอันดับยังไม่ได้ตั้งค่าที่ฐานข้อมูล'}</p>`}}
@@ -5103,7 +5105,7 @@ function progView(){
 
 }
 
-function toast(m){const t=$('#toast');t.textContent=(P.lang||'th')=='en'?(EN_UI[m]||m):m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2000)}
+function toast(m,ok){const t=$('#toast');t.textContent=(P.lang||'th')=='en'?(EN_UI[m]||m):m;t.classList.toggle('err',ok===false);t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2800)}
 
 function copyTxt(t){const done=()=>toast('คัดลอกแล้ว'),fb=()=>{const x=document.createElement('textarea');x.value=t;x.style.cssText='position:fixed;opacity:0';document.body.appendChild(x);x.select();let k=false;try{k=document.execCommand('copy')}catch(e){}x.remove();k?done():toast('คัดลอกอัตโนมัติไม่ได้ กรุณาคัดลอกเอง')};try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}}
 
@@ -5607,7 +5609,46 @@ window.addEventListener('hashchange',route);route();
 
 </script>
 
-<style>/* คำนวณเมทริกซ์: พื้นหลังเขียวมิ้นต์ (ต้องอยู่ท้ายสุดเพื่อทับสีฟ้าเดิม) */ .mi[data-go="matrix"] .mic,[data-theme=dark] .mi[data-go="matrix"] .mic{background:#2EBD8E!important;color:#fff!important;border:2px solid #1F9A72!important;box-shadow:none!important}</style><style>/* เครื่องมือ: เรียงซ้ายไปขวา และสีตามไอคอนหน้าหลัก */ .tiles .tile[data-go="conv"]{background:linear-gradient(135deg,#A78BFA,#7C3AED)!important;border-color:transparent!important} .tiles .tile[data-go="calc"]{background:linear-gradient(135deg,#38BDF8,#0284C7)!important;border-color:transparent!important} .tiles .tile[data-go="sci"]{background:linear-gradient(135deg,#F472B6,#DB2777)!important;border-color:transparent!important} .tiles .tile[data-go="matrix"]{background:linear-gradient(135deg,#5EEAD4,#0F9F78)!important;border-color:transparent!important} .tiles .tile[data-go="tt"]{background:linear-gradient(135deg,#4ADE80,#15803D)!important;border-color:transparent!important} .tiles .tile[data-go="mt"]{background:linear-gradient(135deg,#FDE047,#CA8A04)!important;border-color:transparent!important} .tiles .tile[data-go="pw"]{background:linear-gradient(135deg,#F87171,#B91C1C)!important;border-color:transparent!important}</style><style>/* เครื่องมือ: ลดแสงเรืองและเงา ให้สีเรียบขึ้น */ .tiles .tile{box-shadow:0 4px 12px rgba(20,20,40,.08)!important;border:0!important;text-shadow:none!important;transition:none!important} .tiles .tile:hover,.tiles .tile:active{box-shadow:0 6px 14px rgba(20,20,40,.10)!important} .tiles .tile[data-go="conv"]{background:linear-gradient(180deg,#8B5CF6,#7C3AED)!important;color:#fff!important;text-shadow:none!important} .tiles .tile[data-go="calc"]{background:linear-gradient(180deg,#0EA5E9,#0284C7)!important;color:#fff!important;text-shadow:none!important} .tiles .tile[data-go="sci"]{background:linear-gradient(180deg,#EC4899,#DB2777)!important;color:#fff!important;text-shadow:none!important} .tiles .tile[data-go="matrix"]{background:linear-gradient(180deg,#2EBD8E,#0F9F78)!important;color:#fff!important;text-shadow:none!important} .tiles .tile[data-go="tt"]{background:linear-gradient(180deg,#16A34A,#15803D)!important;color:#fff!important;text-shadow:none!important} .tiles .tile[data-go="mt"]{background:linear-gradient(180deg,#EAB308,#CA8A04)!important;color:#fff!important;text-shadow:none!important} .tiles .tile[data-go="pw"]{background:linear-gradient(180deg,#EF4444,#B91C1C)!important;color:#fff!important;text-shadow:none!important}</style><style>/* คำนวณเมทริกซ์ในเมนูเครื่องมือ: ให้กรอบ พื้น และขนาดไอคอนเหมือนไอคอนอื่น */ .mi[data-go="matrix"] .mic,[data-theme=dark] .mi[data-go="matrix"] .mic{--c:#2EBD8E!important;background:var(--c)!important;color:#fff!important;border:2px solid color-mix(in srgb,var(--c) 60%,#000)!important;box-shadow:none!important}.mi[data-go="matrix"] .mic .ic{display:block!important;width:30px!important;height:30px!important}</style></body>
+<style>/* คำนวณเมทริกซ์: พื้นหลังเขียวมิ้นต์ (ต้องอยู่ท้ายสุดเพื่อทับสีฟ้าเดิม) */ .mi[data-go="matrix"] .mic,[data-theme=dark] .mi[data-go="matrix"] .mic{background:#2EBD8E!important;color:#fff!important;border:2px solid #1F9A72!important;box-shadow:none!important}</style><style>/* คำนวณเมทริกซ์ในเมนูเครื่องมือ: ให้กรอบ พื้น และขนาดไอคอนเหมือนไอคอนอื่น */ .mi[data-go="matrix"] .mic,[data-theme=dark] .mi[data-go="matrix"] .mic{--c:#2EBD8E!important;background:var(--c)!important;color:#fff!important;border:2px solid color-mix(in srgb,var(--c) 60%,#000)!important;box-shadow:none!important}.mi[data-go="matrix"] .mic .ic{display:block!important;width:30px!important;height:30px!important}</style><style>/* รีวิว: จัดระยะปุ่มและข้อความให้โปร่งขึ้น */ .rv-count{display:block;margin:12px 0 18px}.rv-actions{display:flex;flex-direction:column;gap:12px;margin:0}.rv-actions .btn{width:100%;margin:0;box-sizing:border-box}.rv-del{margin-top:0}.rv-msg{margin-top:18px;min-height:1.4em}.rv-form .pw-title{margin-bottom:8px}</style><style>/* รีวิวของฉัน: กดค้างเพื่อลบ */ .rv-item.rv-mine{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;cursor:pointer;border-radius:12px}.rv-hint{display:block;margin-top:4px;color:var(--mut);font-size:12px}</style>
+<style>
+#toast{display:flex;align-items:center;gap:8px;box-shadow:0 8px 22px rgba(20,20,40,.18);max-width:86vw;text-align:center}
+#toast::before{content:'✓';display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.22);font-size:12px;font-weight:700}
+#toast.err{background:#B91C1C}
+#toast.err::before{content:'!'}
+.btn:active{transform:scale(.97)}
+.btn{transition:transform .12s ease,opacity .2s ease}
+.is-busy{position:relative;pointer-events:none;opacity:.8;padding-right:44px!important}
+.is-busy::after{content:'';position:absolute;right:16px;top:50%;width:16px;height:16px;margin-top:-8px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:btnspin .7s linear infinite}
+@keyframes btnspin{to{transform:rotate(360deg)}}
+</style>
+<script>
+(function(){
+ const SAVE=/save|send|submit|update|rvsave|reset|sbname|sbup|sbavatar|msave|authSubmit|lsl|mxExport|conv|hisEdit|hisDel|hisClear|dldone|lldone|done|mdn|mup|theme|lang|setx/i;
+ let timer=null;
+ const clearBusy=()=>{document.querySelectorAll('.is-busy').forEach(b=>b.classList.remove('is-busy'))};
+ document.addEventListener('click',e=>{
+  const b=e.target&&e.target.closest?e.target.closest('button[data-a]'):null;
+  if(!b||!SAVE.test(b.dataset.a||''))return;
+  b.classList.add('is-busy');clearTimeout(timer);timer=setTimeout(clearBusy,8000);
+ },true);
+ const last=new Map();
+ const mo=new MutationObserver(()=>{
+  document.querySelectorAll('[role=status]').forEach(el=>{
+   if(el.id==='toast')return;
+   const txt=(el.textContent||'').trim();
+   const key=el.id||el.className||'status';
+   if(last.get(key)===txt)return;
+   last.set(key,txt);
+   if(!txt){return}
+   if(/…$|\.\.\.$/.test(txt)){return}
+   clearBusy();
+   toast(txt,el.classList.contains('ok')||!/ไม่|กรุณา|ต้อง|เลือก|ยังโหลด|could|please|fail|error|must|not /i.test(txt));
+  });
+ });
+ mo.observe(document.body,{subtree:true,childList:true,characterData:true});
+})();
+</script>
+<style>/* สีการ์ดเครื่องมือ (คงไว้ตามเดิม) */ .tiles .tile[data-go="conv"]{background:#8B5CF6!important;background-image:none!important;color:#fff!important} .tiles .tile[data-go="calc"]{background:#0EA5E9!important;background-image:none!important;color:#fff!important} .tiles .tile[data-go="sci"]{background:#EC4899!important;background-image:none!important;color:#fff!important} .tiles .tile[data-go="matrix"]{background:#2EBD8E!important;background-image:none!important;color:#fff!important} .tiles .tile[data-go="tt"]{background:#16A34A!important;background-image:none!important;color:#fff!important} .tiles .tile[data-go="mt"]{background:#EAB308!important;background-image:none!important;color:#fff!important} .tiles .tile[data-go="pw"]{background:#EF4444!important;background-image:none!important;color:#fff!important}</style><style>/* ไอคอนเครื่องมือเมทริกซ์: สีเรียงตามหน้าเมนูหลัก */ .mx-ico-arithmetic{background:#8B5CF6!important;--mx-icon-border:#5B3BB8!important} .mx-ico-scalar{background:#0EA5E9!important;--mx-icon-border:#0369A1!important} .mx-ico-transpose{background:#EC4899!important;--mx-icon-border:#BE185D!important} .mx-ico-analysis{background:#2EBD8E!important;--mx-icon-border:#1F8E68!important} .mx-ico-lu{background:#16A34A!important;--mx-icon-border:#15803D!important} .mx-ico-eigen{background:#EAB308!important;--mx-icon-border:#A16207!important} .mx-ico-rowops{background:#EF4444!important;--mx-icon-border:#B91C1C!important}</style><style>/* ขอบไอคอนเครื่องมือเมทริกซ์โหมดมืด: ให้เหมือนไอคอนหน้าหลัก */ [data-theme=dark] .mx-tool-icon[class*="mx-ico-"]{border:2px solid var(--mx-icon-border,#000)!important;box-shadow:none!important}</style></body>
 
 </html>
 
