@@ -1689,6 +1689,36 @@ html:has(#toolm:not([hidden])),html:has(#toolm:not([hidden])) body{overflow:hidd
 .mi[data-go="tt"] .mic,[data-theme=dark] .mi[data-go="tt"] .mic{--c:#16A34A!important;--cd:#86EFAC!important}
 .mi[data-go="mt"] .mic,[data-theme=dark] .mi[data-go="mt"] .mic{--c:#EAB308!important;--cd:#FDE047!important}
 .mi[data-go="pw"] .mic,[data-theme=dark] .mi[data-go="pw"] .mic{--c:#EF4444!important;--cd:#FCA5A5!important}
+
+/* ---- BaseLab result screen: clean pass, colors follow each topic (--tc) ---- */
+.cel{background:radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--tc) 18%,#fff) 0%,#F7F9F8 62%) !important;justify-content:flex-start}
+[data-theme=dark] .cel{background:radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--tc) 32%,#0F1A14) 0%,#0F1A14 62%) !important}
+.cel-spark{display:none !important}
+.cel-hero{margin-top:auto !important}
+.cel-bottom{margin-top:auto !important;gap:12px;padding-top:28px}
+.cel-bub{border:1px solid #E3EDE6;box-shadow:0 1px 2px rgba(0,0,0,.05),0 10px 24px rgba(20,40,30,.08);font-size:15px;font-weight:600}
+.cel-title{color:var(--tc) !important;font-size:26px;font-weight:800;letter-spacing:-.01em;margin:18px 0 14px}
+.cel-card{border:1px solid color-mix(in srgb,var(--tc) 18%,#fff);border-radius:20px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px rgba(20,40,30,.08);background:#fff}
+.cel-stats{gap:10px}
+.cel-st{background:color-mix(in srgb,var(--tc) 10%,#fff);border-radius:14px;padding:14px 6px}
+.cel-st b{color:var(--tc);font-size:22px}
+.cel-st small{color:#5B6B61;font-weight:600}
+.cel-ic{width:34px;height:34px;display:grid;place-items:center;color:var(--tc);font-size:0;line-height:0}
+.cel-dots{gap:8px;margin-top:16px}
+.cel-dot{width:10px;height:10px}
+.cel-dot.ok{background:var(--tc)}
+.cel-dot.no{background:#DDE8E0}
+.cel-go{background:var(--tc) !important;color:#fff !important;border:1px solid color-mix(in srgb,var(--tc) 75%,#000) !important;border-radius:14px;padding:16px;font-size:16px;font-weight:700;box-shadow:0 2px 0 color-mix(in srgb,var(--tc) 75%,#000);animation:none !important}
+.cel-go.alt{background:#fff !important;color:var(--tc) !important;border:1.5px solid var(--tc) !important;box-shadow:none}
+[data-theme=dark] .cel-card{background:#17241C}
+[data-theme=dark] .cel-st{background:color-mix(in srgb,var(--tc) 16%,#17241C)}
+[data-theme=dark] .cel-go.alt{background:transparent !important}
+@media (prefers-reduced-motion:reduce){.cel *,.cel{animation:none !important}}
+/* speech bubble: no tail */
+.cel-bub::before{display:none !important}
+
+/* timer labels (hours/minutes): never break inside a Thai word */
+.qtmbox label.fl{white-space:nowrap !important;word-break:keep-all !important;overflow-wrap:normal !important;line-break:strict !important}
 </style>
 
 <script>(function(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';s.async=true;s.onload=function(){try{sbc()}catch(e){}};document.head.appendChild(s)})();</script>
@@ -4963,8 +4993,8 @@ function lbRender(){
  const nm=x=>String(x.display_name||(en?'Learner':'ผู้เรียน'));
  const me=(sbName||'').trim();
  const rows=lbSort(lbRows,T.sk,T.tk).filter(x=>x[T.sk]!=null);
- const tabs=`<div class="lbv-tabs" role="tablist">${LB_TABS.map(t=>`<button class="lbv-tab${t.k===lbTab?' on':''}" role="tab" aria-selected="${t.k===lbTab}" data-lbtab="${t.k}" style="--tc:${t.c}">${en?t.ne:t.n}</button>`).join('')}</div>`;
- const av=(x,sz)=>{const init=E(String(nm(x)).trim().charAt(0).toUpperCase()||'?');const mine=me&&nm(x)===me;const url=mine&&sbAvatar?sbAvatar:'';return url?`<span class="lbv-av" style="width:${sz}px;height:${sz}px"><img src="${E(url)}" alt=""></span>`:`<span class="lbv-av" style="width:${sz}px;height:${sz}px;background:${lbColor(nm(x))}">${init}</span>`};
+ const tabs=`<div class="lbv-tabs" role="tablist">${LB_TABS.map(t=>`<button class="lbv-tab${t.k===lbTab?' on':''}" role="tab" aria-selected="${t.k===lbTab}" data-lbtab="${t.k}" style="--tc:${t.c}">${en?t.ne:t.n}</button>`).join('')}</div>`+`<div class="lbv-dd"><button class="lbv-dd-btn" data-lbdd="1" aria-expanded="${lbDd}" style="--tc:${T.c}"><span class="lbv-dd-dot"></span><span class="lbv-dd-t">${en?T.ne:T.n}</span><svg class="lbv-dd-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>${lbDd?`<div class="lbv-dd-menu" role="listbox">${LB_TABS.map(t=>`<button class="lbv-dd-item${t.k===lbTab?' on':''}" role="option" aria-selected="${t.k===lbTab}" data-lbtab="${t.k}" style="--tc:${t.c}"><span class="lbv-dd-dot"></span>${en?t.ne:t.n}</button>`).join('')}</div>`:''}</div>`;
+ const av=(x,sz)=>{const init=E(String(nm(x)).trim().charAt(0).toUpperCase()||'?');const mine=me&&nm(x)===me;const url=x.avatar_url||(mine&&sbAvatar?sbAvatar:'');return url?`<span class="lbv-av" style="width:${sz}px;height:${sz}px"><img src="${E(url)}" alt=""></span>`:`<span class="lbv-av" style="width:${sz}px;height:${sz}px;background:${lbColor(nm(x))}">${init}</span>`};
  if(!rows.length){el.innerHTML=tabs+`<p class="mut lbv-empty">${en?'No scores in this topic yet. Finish a quiz to appear here.':'ยังไม่มีคะแนนในเรื่องนี้ ทำแบบทดสอบเพื่อขึ้นอันดับ'}</p>`;return}
  const podium=rows.slice(0,3);
  const order=[podium[1],podium[0],podium[2]].filter(Boolean);
@@ -5125,7 +5155,7 @@ function stgPaint(){const e=document.getElementById('stgPlay');if(!e||!stg)retur
   e.innerHTML=`<div class="cel ${pass?'pass':'fail'}" style="--tc:${stg.info.t.c}"><div class="cel-spark" aria-hidden="true"></div><div class="cel-top"><button class="sp-x" data-a="spmap" aria-label="${QT('ปิด','Close')}">✕</button></div>`+
   `<div class="cel-hero">${img?`<img class="cel-m" alt="" src="${img}">`:''}<div class="cel-bub">${bubble}</div></div>`+
   `<h2 class="cel-title">${title}</h2>`+
-  `<div class="cel-card"><div class="cel-stats"><div class="cel-st"><span class="cel-ic">⚡</span><b data-count="${stg.score}" data-suffix="/${n2}">0</b><small>${QT('คะแนน','Score')}</small></div><div class="cel-st"><span class="cel-ic">🎯</span><b data-count="${acc}" data-suffix="%">0</b><small>${QT('แม่นยำ','Accuracy')}</small></div><div class="cel-st"><span class="cel-ic">⏱</span><b>${mm}:${ss}</b><small>${QT('เวลา','Time')}</small></div></div><div class="cel-dots">${dots}</div></div>`+
+  `<div class="cel-card"><div class="cel-stats"><div class="cel-st"><span class="cel-ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span><b data-count="${stg.score}" data-suffix="/${n2}">0</b><small>${QT('คะแนน','Score')}</small></div><div class="cel-st"><span class="cel-ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></span><b data-count="${acc}" data-suffix="%">0</b><small>${QT('แม่นยำ','Accuracy')}</small></div><div class="cel-st"><span class="cel-ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></span><b>${mm}:${ss}</b><small>${QT('เวลา','Time')}</small></div></div><div class="cel-dots">${dots}</div></div>`+
   `<div class="cel-bottom">${btns}</div></div>`;
   celRun();return}
   const q=stg.qs[stg.i],ok=stg.checked&&stg.sel===q.a;
@@ -5234,9 +5264,9 @@ function cutscene(c){const old=document.getElementById('cut');if(old)old.remove(
 let rvPress=null;const rvCancel=()=>{if(rvPress){clearTimeout(rvPress.t);rvPress=null}};document.addEventListener('pointerdown',e=>{const it=e.target&&e.target.closest?e.target.closest('.rv-item.rv-mine'):null;if(!it)return;rvCancel();rvPress={t:setTimeout(()=>{rvPress=null;rvDel()},700)}});['pointerup','pointerleave','pointercancel','pointermove'].forEach(ev=>document.addEventListener(ev,rvCancel,true));
 document.addEventListener('click',e=>{const b=e.target&&e.target.closest?e.target.closest('[data-a="rvopen"],[data-a="rvstar"],[data-a="rvsave"],[data-a="rvdel"]'):null;if(!b)return;const a=b.dataset.a;if(a=='rvopen')rvOpen();else if(a=='rvstar')rvStar(+b.dataset.k);else if(a=='rvsave')rvSave();else if(a=='rvdel')rvDel()});
 document.addEventListener('input',e=>{const t=e.target;if(t&&t.id=='rvtxt'){rvDraft.t=t.value;rvDraft.touched=true;const c=document.getElementById('rvcnt');if(c)c.textContent=t.value.length+'/500'}});
-async function loadLeaderboards(){const el=document.getElementById('leaderboards');if(!el)return;const en=(P.lang||'th')=='en',c=sbc();if(!c){el.innerHTML=`<p class="mut">${en?'Rankings are unavailable right now.':'ยังโหลดอันดับไม่ได้ในขณะนี้'}</p>`;return}const u=await currentUser();if(!u){el.innerHTML=`<p class="mut">${en?'Sign in to view class rankings.':'เข้าสู่ระบบเพื่อดูอันดับผู้เรียน'}</p>`;return}el.innerHTML=`<p class="mut">${en?'Loading rankings…':'กำลังโหลดอันดับ…'}</p>`;try{let r=await c.rpc('baselab_leaderboard_v2');if(r.error)r=await c.rpc('baselab_leaderboard');if(r.error)throw r.error;lbRows=Array.isArray(r.data)?r.data:[];if(!lbRows.length){el.innerHTML=`<p class="mut">${en?'No registered learners yet.':'ยังไม่มีผู้สมัครสมาชิก'}</p>`;return}lbRender()}catch(e){el.innerHTML=`<p class="mut">${en?'Rankings are not set up on the server yet.':'ระบบจัดอันดับยังไม่ได้ตั้งค่าที่ฐานข้อมูล'}</p>`}}
+async function loadLeaderboards(){const el=document.getElementById('leaderboards');if(!el)return;const en=(P.lang||'th')=='en',c=sbc();if(!c){el.innerHTML=`<p class="mut">${en?'Rankings are unavailable right now.':'ยังโหลดอันดับไม่ได้ในขณะนี้'}</p>`;return}const u=await currentUser();if(!u){el.innerHTML=`<p class="mut">${en?'Sign in to view class rankings.':'เข้าสู่ระบบเพื่อดูอันดับผู้เรียน'}</p>`;return}el.innerHTML=`<p class="mut">${en?'Loading rankings…':'กำลังโหลดอันดับ…'}</p>`;try{let r=await c.rpc('baselab_leaderboard_v3');if(r.error)r=await c.rpc('baselab_leaderboard_v2');if(r.error)r=await c.rpc('baselab_leaderboard');if(r.error)throw r.error;lbRows=Array.isArray(r.data)?r.data:[];if(!lbRows.length){el.innerHTML=`<p class="mut">${en?'No registered learners yet.':'ยังไม่มีผู้สมัครสมาชิก'}</p>`;return}lbRender()}catch(e){el.innerHTML=`<p class="mut">${en?'Rankings are not set up on the server yet.':'ระบบจัดอันดับยังไม่ได้ตั้งค่าที่ฐานข้อมูล'}</p>`}}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-lbmore]');if(!b)return;const k=b.dataset.lbmore;lbOpen[k]=!lbOpen[k];lbRender()});
-document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-lbtab]');if(!b)return;lbTab=b.dataset.lbtab;lbRender()});
+document.addEventListener('click',e=>{const dd=e.target.closest&&e.target.closest('[data-lbdd]');if(dd){lbDd=!lbDd;lbRender();return}const b=e.target.closest&&e.target.closest('[data-lbtab]');if(!b)return;lbTab=b.dataset.lbtab;lbDd=false;lbRender()});
 window.addEventListener('load',()=>{try{loadProfile()}catch(e){}});
 
 
@@ -6328,6 +6358,81 @@ function skBadgeSvg(px){
 <style>.sk2-row{scroll-padding-left:22px}.sk2-row2{justify-content:flex-start}</style>
 <style>.stg-float .sf-txt b{line-height:1.6!important;padding-bottom:5px!important;padding-top:1px!important}.sf-txt b{line-height:1.6;padding-bottom:5px}</style>
 <style>[data-theme=dark] .sk-msg{background:#fff!important;color:#374151!important;border-color:transparent!important}</style>
+<style>.sk-d{color:#C4C9D2!important}.sk-d.fut{color:#374151!important}.sk-d.today b{color:#1cb0f6!important}[data-theme=dark] .sk-d{color:#D1D5DB!important}[data-theme=dark] .sk-d.fut{color:#4B5563!important}[data-theme=dark] .sk-d.today b{color:#38bdf8!important}</style>
+<style>[data-theme=dark] .sk-d,.sk-cal .sk-d{}[data-theme=dark] .sk-d{color:#9CA3AF!important}[data-theme=dark] .sk-d.fut{color:#4B5563!important}@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .sk-d{color:#9CA3AF!important}:root:not([data-theme=light]) .sk-d.fut{color:#4B5563!important}}</style>
+<style>[data-theme=dark] .sk-d{color:#CBD1DB!important}[data-theme=dark] .sk-d.fut{color:#FFFFFF!important}@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .sk-d{color:#CBD1DB!important}:root:not([data-theme=light]) .sk-d.fut{color:#FFFFFF!important}}</style>
+<style>[data-theme=dark] .sk-d{color:#AEB4BF!important}[data-theme=dark] .sk-d.fut{color:#E2E5EA!important}@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .sk-d{color:#AEB4BF!important}:root:not([data-theme=light]) .sk-d.fut{color:#E2E5EA!important}}</style>
+<style>.sk-d.today b{display:grid!important;place-items:center;width:34px;height:34px;border-radius:50%;background:#1cb0f6;color:#fff!important;font-weight:800}[data-theme=dark] .sk-d.today b{background:#1cb0f6;color:#fff!important}@media (min-width:768px){.sk-d.today b{width:40px;height:40px}}</style>
+<script>let lbDd=false;</script>
+<style>.lbv-dd{display:none;position:relative;margin:10px 0 4px}.lbv-dd-btn{width:100%;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:16px;border:1.5px solid var(--tc);background:#fff;color:#1f2937;font:inherit;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 4px 14px rgba(20,20,40,.06)}.lbv-dd-dot{width:10px;height:10px;border-radius:50%;background:var(--tc);flex:none}.lbv-dd-t{flex:1;text-align:left}.lbv-dd-chev{color:var(--tc);flex:none}.lbv-dd-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:20;background:#fff;border-radius:16px;padding:6px;box-shadow:0 14px 34px rgba(20,20,40,.18);border:1px solid rgba(20,20,40,.06)}.lbv-dd-item{width:100%;display:flex;align-items:center;gap:10px;padding:11px 12px;border:0;border-radius:12px;background:none;color:#1f2937;font:inherit;font-weight:600;font-size:14px;cursor:pointer;text-align:left}.lbv-dd-item.on{background:color-mix(in srgb,var(--tc) 14%,#fff);color:var(--tc);font-weight:800}.lbv-tabs{display:flex;flex-wrap:wrap;gap:8px}@media (max-width:639px){.lbv-tabs{display:none}.lbv-dd{display:block}}[data-theme=dark] .lbv-dd-btn{background:#1E1838;color:#E5E7EB}[data-theme=dark] .lbv-dd-menu{background:#1E1838}[data-theme=dark] .lbv-dd-item{color:#E5E7EB}</style>
+
+<script>
+/* คำถามไม่ซ้ำทั้งเกม: จัดคำถามให้แต่ละด่านทั้ง 100 ด่าน โดยไม่มีโจทย์ซ้ำกันเลย */
+(function(){
+  const rnd=(()=>{let x=20260;return()=>{x=(x*1664525+1013904223)>>>0;return x/4294967296}})();
+  const digitsOf=(v,b)=>{if(v===0)return'0';const D='0123456789ABCDEF';let t='';while(v>0){t=D[v%b]+t;v=Math.floor(v/b)}return t};
+  const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+  function genBaseExtras(existing){
+    const out={easy:[],medium:[],hard:[]};
+    const seen=new Set(existing);
+    const put=(lv,q,correct,dis,ex,b)=>{
+      const opts=[correct,...dis].filter((v,i,arr)=>arr.indexOf(v)===i);
+      if(opts.length<4||seen.has(q))return;
+      shuffle(opts);
+      const item={q,o:opts.slice(0,4),a:0,ex,b};
+      item.a=item.o.indexOf(correct);
+      seen.add(q);out[lv].push(item);
+    };
+    const alt=(str,b)=>{const last=str.slice(-1),pre=str.slice(0,-1);const d=parseInt(last,b);const nd=digitsOf((d+1)%b,b);return pre+nd};
+    // ง่าย: เลขทศนิยมเป็นฐาน 2 และ 8 ขนาดเล็ก
+    for(let n=6;n<64;n++){for(const b of [2,8]){
+      const c=digitsOf(n,b);
+      put('easy',`แปลง ${n}₁₀ เป็นฐาน ${b}`,c,[String(n),alt(c,b),digitsOf(n+1,b)],`ส่วนจำนวนเต็ม: หารด้วย ${b} ซ้ำจนผลหารเป็น 0 แล้วอ่านเศษจากล่างขึ้นบน ได้ ${c}${sbB(b)}`,b);
+    }}
+    // กลาง: เลขทศนิยมเป็นฐาน 2, 8, 16 ขนาดกลาง
+    for(let n=64;n<512;n+=3){for(const b of [2,8,16]){
+      const c=digitsOf(n,b);
+      put('medium',`แปลง ${n}₁₀ เป็นฐาน ${b}`,c,[String(n),alt(c,b),digitsOf(n-1,b)],`ส่วนจำนวนเต็ม: หารด้วย ${b} ซ้ำจนผลหารเป็น 0 แล้วอ่านเศษจากล่างขึ้นบน ได้ ${c}${sbB(b)}`,b);
+    }}
+    // ยาก: แปลงจากฐาน 2, 8, 16 เป็นฐาน 10
+    for(let n=512;n<4096;n+=7){for(const f of [2,8,16]){
+      const src=digitsOf(n,f);
+      const misread=parseInt(src,10);
+      put('hard',`แปลงเลข ${src}${sbB(f)} เป็นฐาน 10`,String(n),[String(misread),String(n+f),String(n-1)].filter(v=>v!==String(n)),`${src}${sbB(f)} = ${n}₁₀ (คูณแต่ละหลักด้วยค่าประจำหลักของฐาน ${f} แล้วรวมกัน)`,undefined);
+    }}
+    return out;
+  }
+  function sbB(b){return {2:'₂',8:'₈',16:'₁₆'}[b]||''}
+  const existingBase=new Set();
+  for(const lv of ['easy','medium','hard'])for(const it of stagePool('base',lv)){const x=stgNorm('base',it);existingBase.add((x.q||'').replace(/<[^>]+>/g,'').trim())}
+  const extras=genBaseExtras(existingBase);
+  const EXTRA={base:extras};
+  const stemOf=(t,it)=>{const x=stgNorm(t,it);return String(x.q||'').replace(/<[^>]+>/g,'').trim()};
+  const poolFor=(t,lv)=>{const base=stagePool(t,lv);return EXTRA[t]?base.concat(EXTRA[t][lv]||[]):base};
+  let ASSIGN=null;
+  function buildAssign(){
+    const map={};
+    for(const t of ['base','logic','dl','matrix']){
+      const used=new Set();
+      const union=[];for(const lv of ['easy','medium','hard'])union.push(...poolFor(t,lv));
+      for(let n=1;n<=100;n++){
+        const i=stageInfo(n); if(i.t.k!==t)continue;
+        const base={easy:0,medium:8,hard:16}[i.lv],k=i.r-1-base;
+        const primary=poolFor(t,i.lv);
+        const picked=[],seen=new Set();
+        const take=arr=>{for(const it of arr){if(picked.length>=10)break;const st=stemOf(t,it);if(used.has(st)||seen.has(st))continue;seen.add(st);picked.push(it)}};
+        const order=[];for(let j=k*10;j<primary.length;j++)order.push(primary[j]);for(let j=0;j<k*10&&j<primary.length;j++)order.push(primary[j]);
+        take(order);
+        if(picked.length<10)take(union);
+        picked.forEach(it=>used.add(stemOf(t,it)));
+        map[n]=picked;
+      }
+    }
+    return map;
+  }
+  window.stageQsN=function(n){if(!ASSIGN)ASSIGN=buildAssign();return ASSIGN[n]||[]};
+})();
+</script>
 </body>
 
 </html>
