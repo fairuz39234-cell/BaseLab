@@ -3572,15 +3572,15 @@ html:not([data-theme=dark]) .mx-tool-icon.mx-ico-eigenvalues,html:not([data-them
 /* ---- จัดวางแถบจับเวลาใหม่ให้เรียบและลื่นตา: ปุ่มควบคุม / เวลา / กระดาษทด ---- */
 .qtimer{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px 14px;margin:6px 0 14px;min-width:0}
 .qtctl{display:inline-flex;gap:8px;flex:none}
-.qtic{width:40px;height:40px;border-radius:50%;border:1px solid var(--c4);background:#fff;color:var(--c2);display:inline-flex;align-items:center;justify-content:center;font-size:15px;line-height:1;padding:0;cursor:pointer;transition:background .15s,transform .12s}
-.qtic:hover{background:var(--c5)}.qtic:active{transform:scale(.94)}
+.qtic{width:40px;height:40px;border-radius:50%;border:1px solid var(--c4);background:#fff;color:var(--c2);display:inline-flex;align-items:center;justify-content:center;font-size:15px;line-height:1;padding:0;cursor:pointer;transition:background .15s}
+@media(hover:hover){.qtic:hover{background:var(--c5)}}.qtic:active{background:var(--c5)}
 .qtread{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
 .qtread .qlbl{font-size:12px;color:var(--mut);line-height:1.2}
 .qtread .qclock{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.15;white-space:nowrap}
-.qtscratch{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--c4);background:var(--c5);color:var(--c1);font:inherit;font-size:14px;font-weight:600;white-space:nowrap;cursor:pointer;transition:background .15s,transform .12s}
-.qtscratch:hover{background:var(--c4)}.qtscratch:active{transform:scale(.97)}
+.qtscratch{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--c4);background:#fff;color:var(--c1);font:inherit;font-size:14px;font-weight:600;white-space:nowrap;cursor:pointer;transition:background .15s}
+@media(hover:hover){.qtscratch:hover{background:var(--c5)}}.qtscratch:active{background:var(--c5)}
 [data-theme=dark] .qtic,[data-theme=dark] .qtscratch{background:rgba(255,255,255,.06);color:#E9E4FF;border-color:#62547f}
-[data-theme=dark] .qtic:hover,[data-theme=dark] .qtscratch:hover{background:rgba(124,58,237,.22)}
+@media(hover:hover){[data-theme=dark] .qtic:hover,[data-theme=dark] .qtscratch:hover{background:rgba(124,58,237,.22)}}[data-theme=dark] .qtic:active,[data-theme=dark] .qtscratch:active{background:rgba(124,58,237,.22)}
 [data-theme=dark] .qtread .qlbl{color:#b8b0d6}
 @media(max-width:420px){.qtimer{grid-template-columns:auto minmax(0,1fr);gap:10px}.qtscratch{grid-column:1 / -1;justify-content:center;height:42px}.qtic{width:38px;height:38px}}
 </style>
@@ -5761,7 +5761,7 @@ function mascotEl(){return null;let m=document.getElementById('mascot');if(m)ret
  window.addEventListener('resize',()=>{const W=innerWidth,H=innerHeight;m.style.left=Math.min(W-m.offsetWidth-4,Math.max(4,m.offsetLeft))+'px';m.style.top=Math.min(H-m.offsetHeight-4,Math.max(4,m.offsetTop))+'px'});
  return m}
 function mascotPage(){const m=document.getElementById('mascot');if(!m)return;const on=(typeof page!=='undefined'&&page==='stage');m.classList.toggle('pg-off',!on);if(on)m.classList.remove('hid')}
-function mascotSync(lit,n){const m=mascotEl();if(!m)return;m.querySelector('.m-lit').hidden=!lit;m.querySelector('.m-off').hidden=!!lit;m.classList.toggle('is-lit',!!lit)}
+function mascotSync(lit,n){const m=mascotEl();if(!m)return;if(m._litState===!!lit)return;m._litState=!!lit;m.querySelector('.m-lit').hidden=!lit;m.querySelector('.m-off').hidden=!!lit;m.classList.toggle('is-lit',!!lit)}
 function mascotTap(){const st=fireNow(),en=(P.lang||'th')=='en',n=(st.state=='lit'||st.state=='alive')?st.streak:0;
  toast(st.state=='lit'?(en?`Flame is lit · ${n}-day streak`:`ไฟติดแล้ว · ${n} วันติดต่อกัน`):(en?'Clear a stage today to light your flame':'ผ่านด่านวันนี้เพื่อจุดไฟ'))}
 setTimeout(()=>{const st=fireNow();mascotSync(st.state=='lit',0);mascotPage()},0);
